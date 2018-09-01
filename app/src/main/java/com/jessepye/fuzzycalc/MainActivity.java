@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName(); //used for Logs
 
-    Button btn_0, btn_1, btn_ent;
+    Button btn_0, btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_ent;
     TextView calculationWindow;
 
     @Override
@@ -23,6 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
         btn_0 = (Button) findViewById(R.id.btn_0);
         btn_1 = (Button) findViewById(R.id.btn_1);
+        btn_2 = (Button) findViewById(R.id.btn_2);
+        btn_3 = (Button) findViewById(R.id.btn_3);
+        btn_4 = (Button) findViewById(R.id.btn_4);
+        btn_5 = (Button) findViewById(R.id.btn_5);
+        btn_6 = (Button) findViewById(R.id.btn_6);
+        btn_7 = (Button) findViewById(R.id.btn_7);
+        btn_8 = (Button) findViewById(R.id.btn_8);
+        btn_9 = (Button) findViewById(R.id.btn_9);
         btn_ent = (Button) findViewById(R.id.btn_ent);
         calculationWindow = (TextView) findViewById(R.id.calculationWindow);
         calculationWindow.setMovementMethod(new ScrollingMovementMethod());
@@ -39,6 +47,62 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 calculationWindow.setText(calculationWindow.getText() + "1");
+            }
+        });
+
+        btn_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "2");
+            }
+        });
+
+        btn_3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "3");
+            }
+        });
+
+        btn_4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "4");
+            }
+        });
+
+        btn_5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "5");
+            }
+        });
+
+        btn_6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "6");
+            }
+        });
+
+        btn_7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "7");
+            }
+        });
+
+        btn_8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "8");
+            }
+        });
+
+        btn_9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.setText(calculationWindow.getText() + "9");
             }
         });
 
