@@ -21,7 +21,7 @@ tools:context=".MainActivity">
         android:gravity="start"
         android:padding="16dp"
         android:scrollbars="vertical"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@ tools:context=".MainActivity">
             android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:background="#EEE"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_clr"
@@ -45,7 +45,7 @@ tools:context=".MainActivity">
             android:layout_weight="0.2"
             android:text="C"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +63,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="π"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_arcsin"
@@ -73,7 +73,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="sin^-1"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_arccos"
@@ -83,7 +83,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="cos^-1"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_arctan"
@@ -93,17 +93,17 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="tan^-1"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
-            android:id="@+id/btn_backsp"
+            android:id="@+id/btn_backdp"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="⌫"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 
@@ -123,7 +123,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="x^-1"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_sin"
@@ -133,7 +133,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="sin"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_cos"
@@ -143,7 +143,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="cos"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_tan"
@@ -153,7 +153,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="tan"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_exp"
@@ -163,7 +163,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="^"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 
@@ -182,7 +182,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="√"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_ee"
@@ -192,7 +192,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="EE"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_opn_paren"
@@ -202,7 +202,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="("
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_cls_paren"
@@ -212,7 +212,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text=")"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_div"
@@ -222,7 +222,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="÷"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 
@@ -241,7 +241,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="x^2"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_7"
@@ -251,7 +251,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="7"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_8"
@@ -261,7 +261,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="8"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_9"
@@ -271,7 +271,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="9"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_mul"
@@ -281,7 +281,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="×"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 
@@ -299,7 +299,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="log"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_4"
@@ -309,7 +309,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="4"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_5"
@@ -319,7 +319,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="5"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_6"
@@ -329,7 +329,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="6"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_sub"
@@ -339,7 +339,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="-"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 
@@ -357,7 +357,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="ln"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_1"
@@ -367,7 +367,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="1"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_2"
@@ -377,7 +377,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="2"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_3"
@@ -387,7 +387,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="3"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_add"
@@ -397,7 +397,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="+"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 
@@ -415,7 +415,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="e^"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_0"
@@ -425,7 +425,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="0"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
 
         <Button
@@ -436,7 +436,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="."
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_neg"
@@ -444,9 +444,9 @@ tools:context=".MainActivity">
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="-"
+            android:text="(-)"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/btn_ent"
@@ -456,7 +456,7 @@ tools:context=".MainActivity">
             android:layout_weight="1"
             android:text="ENTER"
             android:textAllCaps="false"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
     </LinearLayout>
 </LinearLayout>
