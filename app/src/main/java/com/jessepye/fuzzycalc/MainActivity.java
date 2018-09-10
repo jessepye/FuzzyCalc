@@ -89,49 +89,49 @@ public class MainActivity extends AppCompatActivity {
         btn_sin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("sin(");
+                handleButtonInput("sin(");
             }
         });
 
         btn_cos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("cos(");
+                handleButtonInput("cos(");
             }
         });
 
         btn_tan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("tan(");
+                handleButtonInput("tan(");
             }
         });
 
         btn_exp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("^");
+                handleButtonInput("^");
             }
         });
 
         btn_opn_paren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("(");
+                handleButtonInput("(");
             }
         });
 
         btn_cls_paren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton(")");
+                handleButtonInput(")");
             }
         });
 
         btn_0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("0");
+                handleButtonInput("0");
                 //Log.v(TAG, "Writing 0 to calculationWindow");
             }
         });
@@ -139,98 +139,98 @@ public class MainActivity extends AppCompatActivity {
         btn_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("1");
+                handleButtonInput("1");
             }
         });
 
         btn_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("2");
+                handleButtonInput("2");
             }
         });
 
         btn_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("3");
+                handleButtonInput("3");
             }
         });
 
         btn_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("4");
+                handleButtonInput("4");
             }
         });
 
         btn_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("5");
+                handleButtonInput("5");
             }
         });
 
         btn_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("6");
+                handleButtonInput("6");
             }
         });
 
         btn_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("7");
+                handleButtonInput("7");
             }
         });
 
         btn_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("8");
+                handleButtonInput("8");
             }
         });
 
         btn_9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("9");
+                handleButtonInput("9");
             }
         });
 
         btn_dot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton(".");
+                handleButtonInput(".");
             }
         });
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("+");
+                handleButtonInput("+");
             }
         });
 
         btn_sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("-");
+                handleButtonInput("-");
             }
         });
 
         btn_mul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("*");
+                handleButtonInput("*");
             }
         });
 
         btn_div.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButton("/");
+                handleButtonInput("/");
             }
         });
 
@@ -255,6 +255,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean guessIsCloseEnough() {
+        if(guessWindow.getText().toString().isEmpty() || calculationWindow.getText().toString().isEmpty()){
+            return false;
+        }
         double guess = Double.parseDouble(guessWindow.getText().toString());
         double result = eval(calculationWindow.getText().toString());
         if(result<0) {
@@ -264,8 +267,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleButton(String s) {
-        Log.v(TAG, "Calling handleButton: " + s);
+    private void handleButtonInput(String s) {
+        Log.v(TAG, "Calling handleButtonInput: " + s);
         if (currentlyGuessing) {
             guessWindow.append(s);
         } else {
@@ -276,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
     //TODO: grok this and implement a better version
     //TODO: crashes with empty string input!
     private static double eval(final String str) {
+        if (str.isEmpty()){
+            return Float.NaN;
+        }
         return new Object() {
             int pos = -1, ch;
 
