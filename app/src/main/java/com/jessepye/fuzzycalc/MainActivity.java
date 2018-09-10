@@ -1,3 +1,14 @@
+//TODO: don't allow rotation
+//TODO: hide title bar
+//TODO: pretty colors
+//TODO: fix fonts and sizes
+//TODO: add deg/rad button
+//TODO: fix superscript on sin^-1 etc.
+//TODO: finish adding buttons (...after groking the eval method)
+//TODO: figure out how to add a logo
+//TODO: don't use fixed text sizes
+
+
 package com.jessepye.fuzzycalc;
 
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +23,18 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName(); //used for Logs
 
-    Button btn_clr, btn_add, btn_sub, btn_mul, btn_div, btn_0, btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_ent;
+    private boolean currentlyGuessing = false;
+
+    Button  btn_clr,
+            btn_sin, btn_cos, btn_tan, btn_exp,
+            btn_opn_paren, btn_cls_paren, btn_div,
+            btn_7  , btn_8  , btn_9  , btn_mul,
+            btn_4  , btn_5  , btn_6  , btn_sub,
+            btn_1  , btn_2  , btn_3  , btn_add,
+            btn_0  , btn_dot,          btn_ent;
+
     TextView calculationWindow;
+    TextView resultWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         //Map<Button, Integer> buttonMap = new HashMap<>()
 
         btn_clr = (Button) findViewById(R.id.btn_clr);
+        btn_sin = (Button) findViewById(R.id.btn_sin);
+        btn_cos = (Button) findViewById(R.id.btn_cos);
+        btn_tan = (Button) findViewById(R.id.btn_tan);
+        btn_exp = (Button) findViewById(R.id.btn_exp);
+        btn_opn_paren = (Button) findViewById(R.id.btn_opn_paren);
+        btn_cls_paren = (Button) findViewById(R.id.btn_cls_paren);
         btn_0 = (Button) findViewById(R.id.btn_0);
         btn_1 = (Button) findViewById(R.id.btn_1);
         btn_2 = (Button) findViewById(R.id.btn_2);
@@ -32,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         btn_7 = (Button) findViewById(R.id.btn_7);
         btn_8 = (Button) findViewById(R.id.btn_8);
         btn_9 = (Button) findViewById(R.id.btn_9);
+        btn_dot = (Button) findViewById(R.id.btn_dot);
         btn_add = (Button) findViewById(R.id.btn_add);
         btn_sub = (Button) findViewById(R.id.btn_sub);
         btn_mul = (Button) findViewById(R.id.btn_mul);
@@ -39,12 +67,54 @@ public class MainActivity extends AppCompatActivity {
         btn_ent = (Button) findViewById(R.id.btn_ent);
         calculationWindow = (TextView) findViewById(R.id.calculationWindow);
         calculationWindow.setMovementMethod(new ScrollingMovementMethod());
+        resultWindow = (TextView) findViewById(R.id.resultWindow);
 
         btn_clr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calculationWindow.setText("");
-                //Log.v(TAG, "Writing 0 to calculationWindow");
+            }
+        });
+
+        btn_sin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.append("sin(");
+            }
+        });
+
+        btn_cos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.append("cos(");
+            }
+        });
+
+        btn_tan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.append("tan(");
+            }
+        });
+
+        btn_exp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.append("^");
+            }
+        });
+
+        btn_opn_paren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.append("(");
+            }
+        });
+
+        btn_cls_paren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.append(")");
             }
         });
 
@@ -119,6 +189,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_dot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculationWindow.append(".");
+            }
+        });
+
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                calculationWindow.append("\n"+eval(calculationWindow.getText().toString()));
+                resultWindow.setText( "" + eval(calculationWindow.getText().toString()) ) ; //TODO: omg figure out why I need the ""+
 
                 //We need to scroll to the bottom of the textView:
                 final int scrollAmount = calculationWindow.getLayout().getLineTop(calculationWindow.getLineCount()) - calculationWindow.getHeight();
@@ -164,8 +241,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     //TODO: grok this and implement a better version
-    public static double eval(final String str) {
+    private static double eval(final String str) {
         return new Object() {
             int pos = -1, ch;
 

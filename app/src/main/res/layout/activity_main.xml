@@ -16,12 +16,21 @@ tools:context=".MainActivity">
         android:id="@+id/calculationWindow"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:background="#DDD"
         android:gravity="start"
         android:padding="16dp"
-        android:scrollbars="vertical"
-        android:textSize="14dp" />
+        android:textSize="28dp" />
+
+    <TextView
+        android:id="@+id/resultWindow"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#DDD"
+        android:gravity="end"
+        android:padding="16dp"
+        android:textSize="28dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +44,7 @@ tools:context=".MainActivity">
             android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:background="#EEE"
-            android:textSize="14dp" />
+            android:textSize="28dp" />
 
         <Button
             android:id="@+id/btn_clr"
