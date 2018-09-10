@@ -11,6 +11,7 @@
 
 package com.jessepye.fuzzycalc;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -25,16 +26,17 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean currentlyGuessing = false;
 
-    Button  btn_clr,
+    Button btn_clr,
             btn_sin, btn_cos, btn_tan, btn_exp,
             btn_opn_paren, btn_cls_paren, btn_div,
-            btn_7  , btn_8  , btn_9  , btn_mul,
-            btn_4  , btn_5  , btn_6  , btn_sub,
-            btn_1  , btn_2  , btn_3  , btn_add,
-            btn_0  , btn_dot,          btn_ent;
+            btn_7, btn_8, btn_9, btn_mul,
+            btn_4, btn_5, btn_6, btn_sub,
+            btn_1, btn_2, btn_3, btn_add,
+            btn_0, btn_dot, btn_ent;
 
     TextView calculationWindow;
     TextView resultWindow;
+    TextView guessWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,86 +44,94 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Map<Button, Integer> buttonMap = new HashMap<>()
 
-        btn_clr = (Button) findViewById(R.id.btn_clr);
-        btn_sin = (Button) findViewById(R.id.btn_sin);
-        btn_cos = (Button) findViewById(R.id.btn_cos);
-        btn_tan = (Button) findViewById(R.id.btn_tan);
-        btn_exp = (Button) findViewById(R.id.btn_exp);
-        btn_opn_paren = (Button) findViewById(R.id.btn_opn_paren);
-        btn_cls_paren = (Button) findViewById(R.id.btn_cls_paren);
-        btn_0 = (Button) findViewById(R.id.btn_0);
-        btn_1 = (Button) findViewById(R.id.btn_1);
-        btn_2 = (Button) findViewById(R.id.btn_2);
-        btn_3 = (Button) findViewById(R.id.btn_3);
-        btn_4 = (Button) findViewById(R.id.btn_4);
-        btn_5 = (Button) findViewById(R.id.btn_5);
-        btn_6 = (Button) findViewById(R.id.btn_6);
-        btn_7 = (Button) findViewById(R.id.btn_7);
-        btn_8 = (Button) findViewById(R.id.btn_8);
-        btn_9 = (Button) findViewById(R.id.btn_9);
-        btn_dot = (Button) findViewById(R.id.btn_dot);
-        btn_add = (Button) findViewById(R.id.btn_add);
-        btn_sub = (Button) findViewById(R.id.btn_sub);
-        btn_mul = (Button) findViewById(R.id.btn_mul);
-        btn_div = (Button) findViewById(R.id.btn_div);
-        btn_ent = (Button) findViewById(R.id.btn_ent);
+        btn_clr = findViewById(R.id.btn_clr);
+        btn_sin = findViewById(R.id.btn_sin);
+        btn_cos = findViewById(R.id.btn_cos);
+        btn_tan = findViewById(R.id.btn_tan);
+        btn_exp = findViewById(R.id.btn_exp);
+        btn_opn_paren = findViewById(R.id.btn_opn_paren);
+        btn_cls_paren = findViewById(R.id.btn_cls_paren);
+        btn_0 = findViewById(R.id.btn_0);
+        btn_1 = findViewById(R.id.btn_1);
+        btn_2 = findViewById(R.id.btn_2);
+        btn_3 = findViewById(R.id.btn_3);
+        btn_4 = findViewById(R.id.btn_4);
+        btn_5 = findViewById(R.id.btn_5);
+        btn_6 = findViewById(R.id.btn_6);
+        btn_7 = findViewById(R.id.btn_7);
+        btn_8 = findViewById(R.id.btn_8);
+        btn_9 = findViewById(R.id.btn_9);
+        btn_dot = findViewById(R.id.btn_dot);
+        btn_add = findViewById(R.id.btn_add);
+        btn_sub = findViewById(R.id.btn_sub);
+        btn_mul = findViewById(R.id.btn_mul);
+        btn_div = findViewById(R.id.btn_div);
+        btn_ent = findViewById(R.id.btn_ent);
         calculationWindow = (TextView) findViewById(R.id.calculationWindow);
         calculationWindow.setMovementMethod(new ScrollingMovementMethod());
         resultWindow = (TextView) findViewById(R.id.resultWindow);
+        guessWindow = (TextView) findViewById(R.id.guessWindow);
 
         btn_clr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calculationWindow.setText("");
+                resultWindow.setText("");
+                guessWindow.setText("");
+
+                currentlyGuessing=false;
+                calculationWindow.setBackgroundColor(Color.parseColor("#E8E8E8")); //TODO: probably should be using colors.xml or similar
+                guessWindow.setBackgroundColor(Color.parseColor("#DDDDDD"));
+
             }
         });
 
         btn_sin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("sin(");
+                handleButton("sin(");
             }
         });
 
         btn_cos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("cos(");
+                handleButton("cos(");
             }
         });
 
         btn_tan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("tan(");
+                handleButton("tan(");
             }
         });
 
         btn_exp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("^");
+                handleButton("^");
             }
         });
 
         btn_opn_paren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("(");
+                handleButton("(");
             }
         });
 
         btn_cls_paren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append(")");
+                handleButton(")");
             }
         });
 
         btn_0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("0");
+                handleButton("0");
                 //Log.v(TAG, "Writing 0 to calculationWindow");
             }
         });
@@ -129,121 +139,142 @@ public class MainActivity extends AppCompatActivity {
         btn_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("1");
+                handleButton("1");
             }
         });
 
         btn_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("2");
+                handleButton("2");
             }
         });
 
         btn_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("3");
+                handleButton("3");
             }
         });
 
         btn_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("4");
+                handleButton("4");
             }
         });
 
         btn_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("5");
+                handleButton("5");
             }
         });
 
         btn_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("6");
+                handleButton("6");
             }
         });
 
         btn_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("7");
+                handleButton("7");
             }
         });
 
         btn_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("8");
+                handleButton("8");
             }
         });
 
         btn_9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("9");
+                handleButton("9");
             }
         });
 
         btn_dot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append(".");
+                handleButton(".");
             }
         });
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("+");
+                handleButton("+");
             }
         });
 
         btn_sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("-");
+                handleButton("-");
             }
         });
 
         btn_mul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("*");
+                handleButton("*");
             }
         });
 
         btn_div.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                calculationWindow.append("/");
+                handleButton("/");
             }
         });
 
         btn_ent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                resultWindow.setText( "" + eval(calculationWindow.getText().toString()) ) ; //TODO: omg figure out why I need the ""+
-
-                //We need to scroll to the bottom of the textView:
-                final int scrollAmount = calculationWindow.getLayout().getLineTop(calculationWindow.getLineCount()) - calculationWindow.getHeight();
-                // if there is no need to scroll, scrollAmount will be <=0
-                if (scrollAmount > 0)
-                    calculationWindow.scrollTo(0, scrollAmount);
-                else
-                    calculationWindow.scrollTo(0, 0);
+                if (!currentlyGuessing) {
+                    currentlyGuessing = true;
+                    calculationWindow.setBackgroundColor(Color.parseColor("#DDDDDD")); //TODO: probably should be using colors.xml or similar
+                    guessWindow.setBackgroundColor(Color.parseColor("#E8E8E8"));
+                    guessWindow.setText("");
+                } else {
+                    if(guessIsCloseEnough()) {
+                        resultWindow.setText("" + eval(calculationWindow.getText().toString())); //TODO: omg figure out why I need the "" +
+                        currentlyGuessing=false;
+                        calculationWindow.setBackgroundColor(Color.parseColor("#E8E8E8")); //TODO: probably should be using colors.xml or similar
+                        guessWindow.setBackgroundColor(Color.parseColor("#DDDDDD"));
+                    }
+                }
             }
         });
     }
 
+    private boolean guessIsCloseEnough() {
+        double guess = Double.parseDouble(guessWindow.getText().toString());
+        double result = eval(calculationWindow.getText().toString());
+        if(result<0) {
+            return guess*1.25 < result && result < guess*0.75;
+        } else{
+            return guess*0.75 < result && result < guess*1.25;
+        }
+    }
 
+    private void handleButton(String s) {
+        Log.v(TAG, "Calling handleButton: " + s);
+        if (currentlyGuessing) {
+            guessWindow.append(s);
+        } else {
+            calculationWindow.append(s);
+        }
+    }
 
     //TODO: grok this and implement a better version
+    //TODO: crashes with empty string input!
     private static double eval(final String str) {
         return new Object() {
             int pos = -1, ch;
