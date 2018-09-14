@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getName(); //used for Logs
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean currentlyGuessing = false;
 
     Button btn_clr,
+            btn_backsp,
             btn_sin, btn_cos, btn_tan, btn_exp,
             btn_opn_paren, btn_cls_paren, btn_div,
             btn_7, btn_8, btn_9, btn_mul,
@@ -42,9 +45,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Map<Button, Integer> buttonMap = new HashMap<>()
+
+        ArrayList<Button> calculationWindowList = new ArrayList<Button>();
+        ArrayList<Button> guessWindowList = new ArrayList<Button>();
 
         btn_clr = findViewById(R.id.btn_clr);
+        btn_backsp = findViewById(R.id.btn_backsp);
         btn_sin = findViewById(R.id.btn_sin);
         btn_cos = findViewById(R.id.btn_cos);
         btn_tan = findViewById(R.id.btn_tan);
@@ -80,9 +86,26 @@ public class MainActivity extends AppCompatActivity {
                 guessWindow.setText("");
 
                 currentlyGuessing=false;
-                calculationWindow.setBackgroundColor(Color.parseColor("#E8E8E8")); //TODO: probably should be using colors.xml or similar
-                guessWindow.setBackgroundColor(Color.parseColor("#DDDDDD"));
+                calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
+                guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
 
+            }
+        });
+
+        btn_backsp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentlyGuessing){
+                    Log.v(TAG,"Guess window is currently: "+guessWindow.getText().toString());
+                    if (guessWindow.getText() != null && guessWindow.getText().length() > 0) {
+                        guessWindow.setText( guessWindow.getText().toString().substring(0, guessWindow.getText().length() - 1) );
+                    }
+                }else{
+                    Log.v(TAG,"Calculation window is currently: "+calculationWindow.getText().toString());
+                    if (calculationWindow.getText() != null && calculationWindow.getText().length() > 0) {
+                        calculationWindow.setText( calculationWindow.getText().toString().substring(0, calculationWindow.getText().length() - 1) );
+                    }
+                }
             }
         });
 
@@ -132,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 handleButtonInput("0");
-                //Log.v(TAG, "Writing 0 to calculationWindow");
             }
         });
 
@@ -209,28 +231,28 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButtonInput("+");
+                handleButtonInput(" + ");
             }
         });
 
         btn_sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButtonInput("-");
+                handleButtonInput(" - ");
             }
         });
 
         btn_mul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButtonInput("*");
+                handleButtonInput(" * ");
             }
         });
 
         btn_div.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleButtonInput("/");
+                handleButtonInput(" / ");
             }
         });
 
@@ -239,15 +261,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!currentlyGuessing) {
                     currentlyGuessing = true;
-                    calculationWindow.setBackgroundColor(Color.parseColor("#DDDDDD")); //TODO: probably should be using colors.xml or similar
-                    guessWindow.setBackgroundColor(Color.parseColor("#E8E8E8"));
+                    calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
+                    guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
                     guessWindow.setText("");
                 } else {
                     if(guessIsCloseEnough()) {
                         resultWindow.setText("" + eval(calculationWindow.getText().toString())); //TODO: omg figure out why I need the "" +
                         currentlyGuessing=false;
-                        calculationWindow.setBackgroundColor(Color.parseColor("#E8E8E8")); //TODO: probably should be using colors.xml or similar
-                        guessWindow.setBackgroundColor(Color.parseColor("#DDDDDD"));
+                        calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected)); //TODO: probably should be using colors.xml or similar
+                        guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
                     }
                 }
             }
@@ -260,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         }
         double guess = Double.parseDouble(guessWindow.getText().toString());
         double result = eval(calculationWindow.getText().toString());
+        Log.v(TAG,"Comparing guess " + guess + " against real answer " + result);
         if(result<0) {
             return guess*1.25 < result && result < guess*0.75;
         } else{
@@ -277,10 +300,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //TODO: grok this and implement a better version
-    //TODO: crashes with empty string input!
     private static double eval(final String str) {
         if (str.isEmpty()){
-            return Float.NaN;
+            return Double.NaN;
         }
         return new Object() {
             int pos = -1, ch;

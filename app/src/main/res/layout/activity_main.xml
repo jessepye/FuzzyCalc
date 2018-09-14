@@ -17,7 +17,7 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#E8E8E8"
+        android:background="@color/fieldSelected"
         android:gravity="start"
         android:padding="16dp"
         android:textSize="28dp" />
@@ -27,7 +27,7 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#DDD"
+        android:background="@color/fieldNotSelected"
         android:gravity="end"
         android:padding="16dp"
         android:textSize="28dp" />
@@ -43,13 +43,15 @@ tools:context=".MainActivity">
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.8"
-            android:background="#DDD"
+            android:background="@color/fieldNotSelected"
             android:padding="16dp"
             android:textSize="28dp" />
 
         <Button
             android:id="@+id/btn_clr"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/clearButton"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
@@ -68,6 +70,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_pi"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -78,6 +82,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_arcsin"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -88,6 +94,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_arccos"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -98,6 +106,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_arctan"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -106,8 +116,10 @@ tools:context=".MainActivity">
             android:textSize="18dp" />
 
         <Button
-            android:id="@+id/btn_backdp"
+            android:id="@+id/btn_backsp"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/backspaceButton"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -128,6 +140,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_rec"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -138,6 +152,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_sin"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -148,6 +164,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_cos"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -158,6 +176,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_tan"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -168,6 +188,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_exp"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -187,6 +209,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_sqrt"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -197,6 +221,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_ee"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -207,6 +233,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_opn_paren"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -217,6 +245,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_cls_paren"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -227,6 +257,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_div"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonMedium"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -246,6 +278,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_sqr"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -256,6 +290,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_7"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -266,6 +302,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_8"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -276,6 +314,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_9"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -286,6 +326,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_mul"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonMedium"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -304,6 +346,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_log"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -314,6 +358,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_4"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -324,6 +370,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_5"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -334,6 +382,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_6"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -344,6 +394,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_sub"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonMedium"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -362,6 +414,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_ln"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -372,6 +426,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_1"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -382,6 +438,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_2"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -392,6 +450,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_3"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -402,6 +462,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_add"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonMedium"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -420,6 +482,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_e"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonLight"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -429,7 +493,9 @@ tools:context=".MainActivity">
 
         <Button
             android:id="@+id/btn_0"
+            android:background="@color/buttonDark"
             style="?android:attr/borderlessButtonStyle"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -441,6 +507,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_dot"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -451,6 +519,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_neg"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/buttonDark"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -461,6 +531,8 @@ tools:context=".MainActivity">
         <Button
             android:id="@+id/btn_ent"
             style="?android:attr/borderlessButtonStyle"
+            android:background="@color/enterButton"
+            android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
