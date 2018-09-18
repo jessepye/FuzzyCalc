@@ -33,10 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean currentlyGuessing = false;
 
-    Button btn_clr,
-            btn_backsp,
-            btn_exp,
-            btn_opn_paren, btn_cls_paren, btn_div,
+    Button btn_sqr, btn_backsp, btn_clr,
+            btn_exp, btn_opn_paren, btn_cls_paren, btn_div,
             btn_7, btn_8, btn_9, btn_mul,
             btn_4, btn_5, btn_6, btn_sub,
             btn_1, btn_2, btn_3, btn_add,
@@ -63,12 +61,14 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        //TODO: vibrate on PRESS rather than on CLICK to feel more responsive
         final Vibrator vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
         final int vibeTime = 8;
 
         btn_clr = findViewById(R.id.btn_clr);
         btn_backsp = findViewById(R.id.btn_backsp);
         btn_exp = findViewById(R.id.btn_exp);
+        btn_sqr = findViewById(R.id.btn_sqr);
         btn_opn_paren = findViewById(R.id.btn_opn_paren);
         btn_cls_paren = findViewById(R.id.btn_cls_paren);
         btn_0 = findViewById(R.id.btn_0);
@@ -134,6 +134,14 @@ public class MainActivity extends AppCompatActivity {
                         calculationWindow.setText(calculationWindow.getText().toString().substring(0, calculationWindow.getText().length() - 1));
                     }
                 }
+            }
+        });
+
+        btn_sqr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibe.vibrate(vibeTime);
+                handleButtonInput("^(2)");
             }
         });
 
@@ -329,7 +337,22 @@ public class MainActivity extends AppCompatActivity {
                 guessWindow.append(s);
             }
         } else {
-            calculationWindow.append(s);
+            //Did we just finish a calculation? If so, "1" "2" "3" clear the screen and start a new one; "+" "-" clear the screen, set calculationWindow to last answer, then append the "+"
+            if(!calculationWindow.getText().toString().isEmpty() && !resultWindow.getText().toString().isEmpty() && !guessWindow.getText().toString().isEmpty()){
+                if(s.equals(" + ") || s.equals(" - ") || s.equals(" * ") || s.equals(" / ")){
+                    calculationWindow.setText(resultWindow.getText().toString()+s);
+                    resultWindow.setText("");
+                    guessWindow.setText("");
+                }
+                else{
+                    calculationWindow.setText(s);
+                    resultWindow.setText("");
+                    guessWindow.setText("");
+                }
+            }
+            else {
+                calculationWindow.append(s);
+            }
         }
     }
 
