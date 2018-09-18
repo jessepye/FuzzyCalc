@@ -13,6 +13,7 @@ package com.jessepye.fuzzycalc;
 import android.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -62,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        final Vibrator vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+        final int vibeTime = 8;
+
         btn_clr = findViewById(R.id.btn_clr);
         btn_backsp = findViewById(R.id.btn_backsp);
         btn_exp = findViewById(R.id.btn_exp);
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         btn_clr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 calculationWindow.setText("");
                 resultWindow.setText("");
                 guessWindow.setText("");
@@ -102,9 +107,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //TODO: allow the user to delete many characters quickly by holding the backspace button
         btn_backsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 if (currentlyGuessing) {
                     Log.v(TAG, "Guess window is currently: " + guessWindow.getText().toString());
                     if (guessWindow.getText() != null && guessWindow.getText().length() > 0) {
@@ -122,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         btn_exp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("^");
             }
         });
@@ -129,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
         btn_opn_paren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("(");
             }
         });
@@ -136,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         btn_cls_paren.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput(")");
             }
         });
@@ -143,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         btn_0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("0");
             }
         });
@@ -150,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         btn_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("1");
             }
         });
@@ -157,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
         btn_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("2");
             }
         });
@@ -164,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         btn_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("3");
             }
         });
@@ -171,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
         btn_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("4");
             }
         });
@@ -178,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
         btn_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("5");
             }
         });
@@ -185,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         btn_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("6");
             }
         });
@@ -192,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
         btn_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("7");
             }
         });
@@ -199,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
         btn_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("8");
             }
         });
@@ -206,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
         btn_9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput("9");
             }
         });
@@ -213,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
         btn_dot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput(".");
             }
         });
@@ -220,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput(" + ");
             }
         });
@@ -227,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
         btn_sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput(" - ");
             }
         });
@@ -234,6 +257,7 @@ public class MainActivity extends AppCompatActivity {
         btn_mul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput(" * ");
             }
         });
@@ -241,6 +265,7 @@ public class MainActivity extends AppCompatActivity {
         btn_div.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 handleButtonInput(" / ");
             }
         });
@@ -248,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
         btn_ent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                vibe.vibrate(vibeTime);
                 if (!currentlyGuessing) {
                     currentlyGuessing = true;
                     calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
