@@ -1,6 +1,5 @@
 //TODO: don't allow rotation
 //TODO: hide title bar
-//TODO: pretty colors
 //TODO: fix fonts and sizes
 //TODO: add deg/rad button
 //TODO: fix superscript on sin^-1 etc.
@@ -11,13 +10,18 @@
 
 package com.jessepye.fuzzycalc;
 
+import android.app.ActionBar;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn_clr,
             btn_backsp,
-            btn_sin, btn_cos, btn_tan, btn_exp,
+            btn_exp,
             btn_opn_paren, btn_cls_paren, btn_div,
             btn_7, btn_8, btn_9, btn_mul,
             btn_4, btn_5, btn_6, btn_sub,
@@ -41,19 +45,25 @@ public class MainActivity extends AppCompatActivity {
     TextView resultWindow;
     TextView guessWindow;
 
+    //At first, I thought that storing the calculation as a string was clunky
+    //e.g. when a user types "sin(" then "del" it should delete the whole sin token, rather than '(' then 'n' then 'i' etc...
+    //I thought I would store the calculation input as an ArrayList of button inputs
+    //But then I remembered that I wanted the user to be able to paste a string into the calculation window from outside the app
+    //Thus everything has to be able to parse/understand pure string inputs
+    //Maybe I'll come back to this later...
+    /*
+    ArrayList<Button> calculationWindowList = new ArrayList<Button>();
+    ArrayList<Button> guessWindowList = new ArrayList<Button>();
+    */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        ArrayList<Button> calculationWindowList = new ArrayList<Button>();
-        ArrayList<Button> guessWindowList = new ArrayList<Button>();
+        setContentView(R.layout.activity_main);
 
         btn_clr = findViewById(R.id.btn_clr);
         btn_backsp = findViewById(R.id.btn_backsp);
-        btn_sin = findViewById(R.id.btn_sin);
-        btn_cos = findViewById(R.id.btn_cos);
-        btn_tan = findViewById(R.id.btn_tan);
         btn_exp = findViewById(R.id.btn_exp);
         btn_opn_paren = findViewById(R.id.btn_opn_paren);
         btn_cls_paren = findViewById(R.id.btn_cls_paren);
@@ -85,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 resultWindow.setText("");
                 guessWindow.setText("");
 
-                currentlyGuessing=false;
+                currentlyGuessing = false;
                 calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
                 guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
 
@@ -95,38 +105,17 @@ public class MainActivity extends AppCompatActivity {
         btn_backsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentlyGuessing){
-                    Log.v(TAG,"Guess window is currently: "+guessWindow.getText().toString());
+                if (currentlyGuessing) {
+                    Log.v(TAG, "Guess window is currently: " + guessWindow.getText().toString());
                     if (guessWindow.getText() != null && guessWindow.getText().length() > 0) {
-                        guessWindow.setText( guessWindow.getText().toString().substring(0, guessWindow.getText().length() - 1) );
+                        guessWindow.setText(guessWindow.getText().toString().substring(0, guessWindow.getText().length() - 1));
                     }
-                }else{
-                    Log.v(TAG,"Calculation window is currently: "+calculationWindow.getText().toString());
+                } else {
+                    Log.v(TAG, "Calculation window is currently: " + calculationWindow.getText().toString());
                     if (calculationWindow.getText() != null && calculationWindow.getText().length() > 0) {
-                        calculationWindow.setText( calculationWindow.getText().toString().substring(0, calculationWindow.getText().length() - 1) );
+                        calculationWindow.setText(calculationWindow.getText().toString().substring(0, calculationWindow.getText().length() - 1));
                     }
                 }
-            }
-        });
-
-        btn_sin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonInput("sin(");
-            }
-        });
-
-        btn_cos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonInput("cos(");
-            }
-        });
-
-        btn_tan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonInput("tan(");
             }
         });
 
@@ -263,11 +252,12 @@ public class MainActivity extends AppCompatActivity {
                     currentlyGuessing = true;
                     calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
                     guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
-                    guessWindow.setText("");
+                    guessWindow.setTypeface(null, Typeface.ITALIC);
+                    guessWindow.setText("(Enter a guess)");
                 } else {
-                    if(guessIsCloseEnough()) {
+                    if (guessIsCloseEnough()) {
                         resultWindow.setText("" + eval(calculationWindow.getText().toString())); //TODO: omg figure out why I need the "" +
-                        currentlyGuessing=false;
+                        currentlyGuessing = false;
                         calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected)); //TODO: probably should be using colors.xml or similar
                         guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
                     }
@@ -277,16 +267,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean guessIsCloseEnough() {
-        if(guessWindow.getText().toString().isEmpty() || calculationWindow.getText().toString().isEmpty()){
+        if (guessWindow.getText().toString().isEmpty() || calculationWindow.getText().toString().isEmpty()) {
             return false;
         }
         double guess = Double.parseDouble(guessWindow.getText().toString());
         double result = eval(calculationWindow.getText().toString());
-        Log.v(TAG,"Comparing guess " + guess + " against real answer " + result);
-        if(result<0) {
-            return guess*1.25 < result && result < guess*0.75;
-        } else{
-            return guess*0.75 < result && result < guess*1.25;
+        Log.v(TAG, "Comparing guess " + guess + " against real answer " + result);
+        if (result < 0) {
+            return guess * 1.25 < result && result < guess * 0.75;
+        } else {
+            return guess * 0.75 < result && result < guess * 1.25;
         }
     }
 
@@ -301,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: grok this and implement a better version
     private static double eval(final String str) {
-        if (str.isEmpty()){
+        if (str.isEmpty()) {
             return Double.NaN;
         }
         return new Object() {

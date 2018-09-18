@@ -10,7 +10,7 @@ tools:context=".MainActivity">
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="10">
+    android:weightSum="9">
 
     <TextView
         android:id="@+id/calculationWindow"
@@ -32,86 +32,43 @@ tools:context=".MainActivity">
         android:padding="16dp"
         android:textSize="28dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/guessWindow"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.8"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/fieldNotSelected"
             android:padding="16dp"
             android:textSize="28dp" />
 
-        <Button
-            android:id="@+id/btn_clr"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/clearButton"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            android:text="C"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="5">
-
+        android:weightSum="4">
 
         <Button
-            android:id="@+id/btn_pi"
+            android:id="@+id/btn_sqr"
             style="?android:attr/borderlessButtonStyle"
             android:background="@color/buttonLight"
             android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="π"
+            android:text="x^2"
             android:textAllCaps="false"
             android:textSize="18dp" />
 
         <Button
-            android:id="@+id/btn_arcsin"
+            android:id="@+id/btn_sqrt"
             style="?android:attr/borderlessButtonStyle"
             android:background="@color/buttonLight"
             android:textColor="@android:color/white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="sin^-1"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/btn_arccos"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="cos^-1"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/btn_arctan"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="tan^-1"
+            android:text="√"
             android:textAllCaps="false"
             android:textSize="18dp" />
 
@@ -127,63 +84,25 @@ tools:context=".MainActivity">
             android:textAllCaps="false"
             android:textSize="18dp" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/btn_clr"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@color/clearButton"
+            android:textColor="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="C"
+            android:textAllCaps="false"
+            android:textSize="18dp" />
 
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="5">
-
-
-        <Button
-            android:id="@+id/btn_rec"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="x^-1"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/btn_sin"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="sin"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/btn_cos"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="cos"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/btn_tan"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="tan"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
+        android:weightSum="4">
 
         <Button
             android:id="@+id/btn_exp"
@@ -194,39 +113,6 @@ tools:context=".MainActivity">
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="^"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:weightSum="5">
-
-
-        <Button
-            android:id="@+id/btn_sqrt"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="√"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
-
-        <Button
-            android:id="@+id/btn_ee"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="EE"
             android:textAllCaps="false"
             android:textSize="18dp" />
 
@@ -273,19 +159,7 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="5">
-
-        <Button
-            android:id="@+id/btn_sqr"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="x^2"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
+        android:weightSum="4">
 
         <Button
             android:id="@+id/btn_7"
@@ -341,19 +215,7 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="5">
-
-        <Button
-            android:id="@+id/btn_log"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="log"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
+        android:weightSum="4">
 
         <Button
             android:id="@+id/btn_4"
@@ -409,19 +271,7 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="5">
-
-        <Button
-            android:id="@+id/btn_ln"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="ln"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
+        android:weightSum="4">
 
         <Button
             android:id="@+id/btn_1"
@@ -477,19 +327,7 @@ tools:context=".MainActivity">
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="5">
-
-        <Button
-            android:id="@+id/btn_e"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/buttonLight"
-            android:textColor="@android:color/white"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="e^"
-            android:textAllCaps="false"
-            android:textSize="18dp" />
+        android:weightSum="4">
 
         <Button
             android:id="@+id/btn_0"
