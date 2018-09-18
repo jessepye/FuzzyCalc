@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
                     calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
                     guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
                     guessWindow.setTypeface(null, Typeface.ITALIC);
-                    guessWindow.setText("(Enter a guess)");
+                    guessWindow.setText(getString(R.string.guess_hint));
                 } else {
                     if (guessIsCloseEnough()) {
                         resultWindow.setText("" + eval(calculationWindow.getText().toString())); //TODO: omg figure out why I need the "" +
@@ -309,7 +309,14 @@ public class MainActivity extends AppCompatActivity {
     private void handleButtonInput(String s) {
         Log.v(TAG, "Calling handleButtonInput: " + s);
         if (currentlyGuessing) {
-            guessWindow.append(s);
+            Log.v(TAG,"Comparing "+guessWindow.getText().toString()+" against "+getString(R.string.guess_hint));
+            if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))) {
+                guessWindow.setTypeface(null, Typeface.NORMAL);
+                guessWindow.setText(s);
+            }
+            else {
+                guessWindow.append(s);
+            }
         } else {
             calculationWindow.append(s);
         }
