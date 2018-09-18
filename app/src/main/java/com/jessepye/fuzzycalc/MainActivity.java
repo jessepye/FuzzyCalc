@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         btn_div = findViewById(R.id.btn_div);
         btn_ent = findViewById(R.id.btn_ent);
         calculationWindow = (TextView) findViewById(R.id.calculationWindow);
-        calculationWindow.setMovementMethod(new ScrollingMovementMethod());
+        //calculationWindow.setMovementMethod(new ScrollingMovementMethod());
         resultWindow = (TextView) findViewById(R.id.resultWindow);
         guessWindow = (TextView) findViewById(R.id.guessWindow);
 
@@ -96,14 +96,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 vibe.vibrate(vibeTime);
-                calculationWindow.setText("");
-                resultWindow.setText("");
-                guessWindow.setText("");
 
-                currentlyGuessing = false;
-                calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
-                guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
+                if(currentlyGuessing){
+                    if(guessWindow.getText().toString().isEmpty()){
+                        calculationWindow.setText("");
+                        resultWindow.setText("");
+                        currentlyGuessing = false;
+                        calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
+                        guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
 
+                    }
+                    else {
+                        guessWindow.setText("");
+                    }
+                }
+                else{
+                    calculationWindow.setText("");
+                    resultWindow.setText("");
+                    guessWindow.setText("");
+                }
             }
         });
 
