@@ -1,15 +1,16 @@
 //TODO: don't allow rotation
 //TODO: hide title bar
 //TODO: fix fonts and sizes
-//TODO: add deg/rad button
-//TODO: fix superscript on sin^-1 etc.
-//TODO: finish adding buttons (...after groking the eval method)
+//TODO: fix superscript on x^2
+//TODO: finish (-)
 //TODO: figure out how to add a logo
 //TODO: don't use fixed text sizes
 
 
 package com.jessepye.fuzzycalc;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -18,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,9 +29,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = MainActivity.class.getName(); //used for Logs
+
+
 
     private boolean currentlyGuessing = false;
 
@@ -61,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        //TODO: vibrate on PRESS rather than on CLICK to feel more responsive
         final Vibrator vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
         final int vibeTime = 8;
 
@@ -91,6 +94,20 @@ public class MainActivity extends AppCompatActivity {
         //calculationWindow.setMovementMethod(new ScrollingMovementMethod());
         resultWindow = (TextView) findViewById(R.id.resultWindow);
         guessWindow = (TextView) findViewById(R.id.guessWindow);
+
+        /*
+        btn_clr.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+
+                    vibe.vibrate(vibeTime);
+                    return true;
+                }
+                return false;
+            }
+        });
+  */
 
         btn_clr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -304,13 +321,36 @@ public class MainActivity extends AppCompatActivity {
                         resultWindow.setText("" + eval(calculationWindow.getText().toString())); //TODO: omg figure out why I need the "" +
                         currentlyGuessing = false;
                         calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected)); //TODO: probably should be using colors.xml or similar
-                        guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
+                        //guessWindow.setBackgroundColor(getResources().getColor(R.color.correctGuessColor));
+                        ObjectAnimator colorFade = ObjectAnimator.ofObject(guessWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.correctGuessColor), getResources().getColor(R.color.fieldNotSelected));
+                        colorFade.setDuration(750);
+                        colorFade.start();
+                    }
+                    else{
+                        ObjectAnimator colorFade = ObjectAnimator.ofObject(guessWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.incorrectGuessColor), getResources().getColor(R.color.fieldSelected));
+                        colorFade.setDuration(750);
+                        colorFade.start();
                     }
                 }
             }
         });
     }
 
+
+    //TODO: figure out how to implement this (one method for all buttons)
+    // see: https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android/25905182
+    /*
+    public boolean onTouch(View v, MotionEvent event){
+        Log.v("onTouch","Calling onTouch method");
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            final Vibrator vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+            final int vibeTime = 8;
+            vibe.vibrate(vibeTime);
+            return true;
+        }
+        return false;
+    }
+    */
     private boolean guessIsCloseEnough() {
         if (guessWindow.getText().toString().isEmpty() || calculationWindow.getText().toString().isEmpty()) {
             return false;
@@ -337,7 +377,9 @@ public class MainActivity extends AppCompatActivity {
                 guessWindow.append(s);
             }
         } else {
-            //Did we just finish a calculation? If so, "1" "2" "3" clear the screen and start a new one; "+" "-" clear the screen, set calculationWindow to last answer, then append the "+"
+            //Did we just finish a calculation?
+            // If so, "1" "2" "3" clear the screen and start a new one;
+            // "+" "-" clear the screen, set calculationWindow to last answer, then append the "+" "-"
             if(!calculationWindow.getText().toString().isEmpty() && !resultWindow.getText().toString().isEmpty() && !guessWindow.getText().toString().isEmpty()){
                 if(s.equals(" + ") || s.equals(" - ") || s.equals(" * ") || s.equals(" / ")){
                     calculationWindow.setText(resultWindow.getText().toString()+s);
