@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
@@ -318,11 +319,14 @@ public class MainActivity extends AppCompatActivity{
                     guessWindow.setText(getString(R.string.guess_hint));
                 } else {
                     if (guessIsCloseEnough()) {
-                        resultWindow.setText("" + eval(calculationWindow.getText().toString())); //TODO: omg figure out why I need the "" +
+                        DecimalFormat df = new DecimalFormat("#.##########");
+                        resultWindow.setText("" + df.format(eval(calculationWindow.getText().toString()))); //TODO: omg figure out why I need the "" +
                         currentlyGuessing = false;
                         calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected)); //TODO: probably should be using colors.xml or similar
-                        //guessWindow.setBackgroundColor(getResources().getColor(R.color.correctGuessColor));
-                        ObjectAnimator colorFade = ObjectAnimator.ofObject(guessWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.correctGuessColor), getResources().getColor(R.color.fieldNotSelected));
+                        guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
+
+                        //TODO: I wonder if this ObjectAnimator should be declared somewhere else?
+                        ObjectAnimator colorFade = ObjectAnimator.ofObject(resultWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.correctGuessColor), getResources().getColor(R.color.fieldNotSelected));
                         colorFade.setDuration(750);
                         colorFade.start();
                     }
@@ -396,6 +400,26 @@ public class MainActivity extends AppCompatActivity{
                 calculationWindow.append(s);
             }
         }
+    }
+
+    private static double evalNew(final String str){
+        //TODO: make sure parenthesis are valid e.g. nothing like ())(
+        if(str.indexOf('(')!=-1){
+            return Double.NaN;
+        }
+        if(str.indexOf('√')!=-1){
+            return Double.NaN;
+        }
+        if(str.indexOf('^')!=-1){
+            return Double.NaN;
+        }
+        if(str.indexOf('*')!=-1 || str.indexOf('/')!=-1){
+            return Double.NaN;
+        }
+        if(str.indexOf('+')!=-1 || str.indexOf('-')!=-1){
+            return Double.NaN;
+        }
+        return Double.parseDouble(str);
     }
 
     //TODO: grok this and implement a better version

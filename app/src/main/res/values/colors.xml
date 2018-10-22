@@ -12,5 +12,5 @@
     <color name="buttonMedium">#666666</color>
     <color name="buttonLight">#888888</color>
     <color name="correctGuessColor">#00e676</color>
-    <color name="incorrectGuessColor">#d50000</color>
+    <color name="incorrectGuessColor">#e53935</color>
 </resources>
