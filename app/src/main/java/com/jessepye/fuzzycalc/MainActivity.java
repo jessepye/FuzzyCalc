@@ -402,8 +402,9 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private static double evalNew(final String str){
-        //TODO: make sure parenthesis are valid e.g. nothing like ())(
+    private static double eval(String str){
+        //TODO: do input validation, e.g. make sure parenthesis are valid, nothing like ())(
+        Log.v(TAG, "Calling Eval (new) with: " + str);
         if(str.indexOf('(')!=-1){
             return Double.NaN;
         }
@@ -416,14 +417,52 @@ public class MainActivity extends AppCompatActivity{
         if(str.indexOf('*')!=-1 || str.indexOf('/')!=-1){
             return Double.NaN;
         }
-        if(str.indexOf('+')!=-1 || str.indexOf('-')!=-1){
-            return Double.NaN;
+        if(str.indexOf('+')!=-1 || str.indexOf('-')!=-1){ // there's only + and - left; compute the first operation and run eval again.
+            double firstNumber;
+            double secondNumber;
+            //Which comes first, the + or the - ?
+            if(str.indexOf('-')==-1 || (str.indexOf('+')!=-1 && str.indexOf('+')<str.indexOf('-'))) {  // + is first
+                firstNumber = Double.parseDouble(str.substring(0,str.indexOf('+')));
+                int endIndexOfSecondNumber = str.indexOf('+')+1; // substring beginning index is inclusive, but ending index is NOT inclusive
+                //first get past the white space after the '+'
+                while(str.charAt(endIndexOfSecondNumber)==' '){
+                    endIndexOfSecondNumber++;
+                }
+                //now find the ending index of the second number
+                while(endIndexOfSecondNumber<str.length() && (( str.charAt(endIndexOfSecondNumber)>='0'&&str.charAt(endIndexOfSecondNumber)<='9') || str.charAt(endIndexOfSecondNumber)=='.')){
+                    endIndexOfSecondNumber++;
+                }
+                if(endIndexOfSecondNumber>=str.length())
+                    secondNumber=Double.parseDouble(str.substring(str.indexOf('+')+1));
+                else
+                    secondNumber = Double.parseDouble(str.substring(str.indexOf('+')+1,endIndexOfSecondNumber));
+                return firstNumber+secondNumber;
+            }
+            else{                                                            // - is first
+                firstNumber = Double.parseDouble(str.substring(0,str.indexOf('-')));
+                int endIndexOfSecondNumber = str.indexOf('-')+1;
+                //first get past the white space after the '+'
+                while(str.charAt(endIndexOfSecondNumber)==' '){
+                    endIndexOfSecondNumber++;
+                }
+                //now find the ending index of the second number
+                while(endIndexOfSecondNumber<str.length() && ((str.charAt(endIndexOfSecondNumber)>='0'&&str.charAt(endIndexOfSecondNumber)<='9') || str.charAt(endIndexOfSecondNumber)=='.')){
+                    endIndexOfSecondNumber++;
+                }
+                if(endIndexOfSecondNumber>=str.length())
+                    secondNumber=Double.parseDouble(str.substring(str.indexOf('-')+1));
+                else
+                    secondNumber = Double.parseDouble(str.substring(str.indexOf('-')+1,endIndexOfSecondNumber));
+                return firstNumber-secondNumber;
+            }
+            //return Double.NaN;
         }
+        Log.v(TAG,"Returning: "+str);
         return Double.parseDouble(str);
     }
 
     //TODO: grok this and implement a better version
-    private static double eval(final String str) {
+    private static double evalOld(final String str) {
         if (str.isEmpty()) {
             return Double.NaN;
         }
