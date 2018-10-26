@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
             btn_7, btn_8, btn_9, btn_mul,
             btn_4, btn_5, btn_6, btn_sub,
             btn_1, btn_2, btn_3, btn_add,
-            btn_0, btn_dot, btn_ent;
+            btn_0, btn_dot, btn_neg, btn_ent;
 
     TextView calculationWindow;
     TextView resultWindow;
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity{
         btn_8 = findViewById(R.id.btn_8);
         btn_9 = findViewById(R.id.btn_9);
         btn_dot = findViewById(R.id.btn_dot);
+        btn_neg = findViewById(R.id.btn_neg);
         btn_add = findViewById(R.id.btn_add);
         btn_sub = findViewById(R.id.btn_sub);
         btn_mul = findViewById(R.id.btn_mul);
@@ -275,6 +276,14 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        btn_neg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibe.vibrate(vibeTime);
+                handleButtonInput("-");
+            }
+        });
+
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -404,6 +413,8 @@ public class MainActivity extends AppCompatActivity{
 
     private static double eval(String str){
         //TODO: do input validation, e.g. make sure parenthesis are valid, nothing like ())(
+        int currentIndex=0;
+
         Log.v(TAG, "Calling Eval (new) with: " + str);
         if(str.indexOf('(')!=-1){
             return Double.NaN;
@@ -417,48 +428,95 @@ public class MainActivity extends AppCompatActivity{
         if(str.indexOf('*')!=-1 || str.indexOf('/')!=-1){
             return Double.NaN;
         }
-        if(str.indexOf('+')!=-1 || str.indexOf('-')!=-1){ // there's only + and - left; compute the first operation and run eval again.
+        // there's only + and - left; compute the first operation and run eval again.
+        // (this one gets ugly because the - symbol is overloaded to show subtraction and negatives)
+        if(str.indexOf('+')!=-1 || str.indexOf('-')!=-1){
             double firstNumber;
+            boolean firstNumberIsNegative=false;
             double secondNumber;
-            //Which comes first, the + or the - ?
-            if(str.indexOf('-')==-1 || (str.indexOf('+')!=-1 && str.indexOf('+')<str.indexOf('-'))) {  // + is first
-                firstNumber = Double.parseDouble(str.substring(0,str.indexOf('+')));
-                int endIndexOfSecondNumber = str.indexOf('+')+1; // substring beginning index is inclusive, but ending index is NOT inclusive
-                //first get past the white space after the '+'
-                while(str.charAt(endIndexOfSecondNumber)==' '){
-                    endIndexOfSecondNumber++;
-                }
-                //now find the ending index of the second number
-                while(endIndexOfSecondNumber<str.length() && (( str.charAt(endIndexOfSecondNumber)>='0'&&str.charAt(endIndexOfSecondNumber)<='9') || str.charAt(endIndexOfSecondNumber)=='.')){
-                    endIndexOfSecondNumber++;
-                }
-                if(endIndexOfSecondNumber>=str.length())
-                    secondNumber=Double.parseDouble(str.substring(str.indexOf('+')+1));
-                else
-                    secondNumber = Double.parseDouble(str.substring(str.indexOf('+')+1,endIndexOfSecondNumber));
-                return firstNumber+secondNumber;
+            boolean secondNumberIsNegative=false;
+            int beginIndex = 0;
+            int endIndex = 0;
+
+            //first move past any whitespace at the beginning
+            while(str.charAt(beginIndex)==' ') beginIndex++;
+
+            //does the number lead with a - ?
+            if(str.charAt(beginIndex)=='-'){
+                firstNumberIsNegative = true;
+                beginIndex++;
             }
-            else{                                                            // - is first
-                firstNumber = Double.parseDouble(str.substring(0,str.indexOf('-')));
-                int endIndexOfSecondNumber = str.indexOf('-')+1;
-                //first get past the white space after the '+'
-                while(str.charAt(endIndexOfSecondNumber)==' '){
-                    endIndexOfSecondNumber++;
-                }
-                //now find the ending index of the second number
-                while(endIndexOfSecondNumber<str.length() && ((str.charAt(endIndexOfSecondNumber)>='0'&&str.charAt(endIndexOfSecondNumber)<='9') || str.charAt(endIndexOfSecondNumber)=='.')){
-                    endIndexOfSecondNumber++;
-                }
-                if(endIndexOfSecondNumber>=str.length())
-                    secondNumber=Double.parseDouble(str.substring(str.indexOf('-')+1));
-                else
-                    secondNumber = Double.parseDouble(str.substring(str.indexOf('-')+1,endIndexOfSecondNumber));
-                return firstNumber-secondNumber;
+
+            //sometimes there is whitespace after the -
+            while(str.charAt(beginIndex)==' ') beginIndex++;
+
+            //now find endIndex of the first number;
+            endIndex=beginIndex;
+            while(endIndex<str.length() && ((str.charAt(endIndex)>='0'&&str.charAt(endIndex)<='9') || str.charAt(endIndex)=='.')) endIndex++;
+
+            //now we can "gobble up" any trailing whitespace after the first number
+            while(str.charAt(endIndex)==' ') endIndex++;
+
+            //finally we can get the value of firstNumber
+
+            //if firstNumber goes to the end of the string, we are done, return that number.
+            if(endIndex>=str.length()){ //TODO: debug this line, is it really always false? this should get called when str = "-10" for example
+                firstNumber=Double.parseDouble(str.substring(beginIndex));
+                if (firstNumberIsNegative) firstNumber = -firstNumber;
+                return firstNumber;
             }
-            //return Double.NaN;
+            else{
+                firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
+                if(firstNumberIsNegative) firstNumber = -firstNumber;
+            }
+
+            //Now find the beginning of the secondNumber
+            // Some examples:
+            // 12 + 23
+            // 12 - 23
+            // 12 + -23
+            // 12 - -23
+            beginIndex=endIndex;
+            while(str.charAt(beginIndex)==' ' || str.charAt(beginIndex)=='+' || str.charAt(beginIndex)=='-'){
+                if(str.charAt(beginIndex)=='-') secondNumberIsNegative = true;
+                beginIndex++;
+            }
+
+            //Now to find the end of secondNumber
+            endIndex=beginIndex;
+            while(endIndex<str.length() && ((str.charAt(endIndex)>='0' && str.charAt(endIndex)<='9') || str.charAt(endIndex)=='.')) endIndex++;
+
+            //finally grab the value of secondNumber
+            if(endIndex>=str.length()){
+                secondNumber=Double.parseDouble(str.substring(beginIndex));
+            }
+            else{
+                secondNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
+            }
+            if(secondNumberIsNegative) secondNumber = -secondNumber;
+
+            //FINALLY add the two numbers and run eval again recursively
+            double result=firstNumber+secondNumber;
+            if(endIndex<=str.length()-1) return eval(String.valueOf(result)+str.substring(endIndex));
+            else return result;
         }
-        Log.v(TAG,"Returning: "+str);
-        return Double.parseDouble(str);
+
+        //no symbols, only digits left:
+        if(str.indexOf('0')!=-1 ||
+                str.indexOf('1')!=-1 ||
+                str.indexOf('2')!=-1 ||
+                str.indexOf('3')!=-1 ||
+                str.indexOf('4')!=-1 ||
+                str.indexOf('5')!=-1 ||
+                str.indexOf('6')!=-1 ||
+                str.indexOf('7')!=-1 ||
+                str.indexOf('8')!=-1 ||
+                str.indexOf('9')!=-1){
+            return Double.parseDouble(str);
+        }
+
+        //At this point, we don't have any recognised symbols or digits
+        return Double.NaN;
     }
 
     //TODO: grok this and implement a better version
