@@ -371,11 +371,11 @@ public class MainActivity extends AppCompatActivity{
         double guess = Double.parseDouble(guessWindow.getText().toString());
         double result = eval(calculationWindow.getText().toString());
         Log.v(TAG, "Comparing guess " + guess + " against real answer " + result);
-        if (result < 0) {
-            return guess * 1.25 < result && result < guess * 0.75;
-        } else {
-            return guess * 0.75 < result && result < guess * 1.25;
-        }
+
+        double errorRatio = Math.abs((guess-result)/result);
+        double absoluteError = Math.abs(guess-result);
+        Log.v(TAG,"errorRatio = "+errorRatio+"; absoluteError = "+absoluteError);
+        return (errorRatio<=0.10 || absoluteError<=1);
     }
 
     private void handleButtonInput(String s) {
@@ -413,37 +413,104 @@ public class MainActivity extends AppCompatActivity{
 
     private static double eval(String str){
         //TODO: do input validation, e.g. make sure parenthesis are valid, nothing like ())(
-        int currentIndex=0;
 
-        Log.v(TAG, "Calling Eval (new) with: " + str);
+        double firstNumber;
+        boolean firstNumberIsNegative=false;
+        double secondNumber;
+        boolean secondNumberIsNegative=false;
+
+        //used to track individual numbers e.g. firstNumber=Double.parseDouble(str.subString(beginIndex,endIndex))
+        int beginIndex = 0;
+        int endIndex = 0;
+
+        //used when keeping track of what to "cut out," before calling eval recursively
+        int beginCalcIndex = 0;
+
+        Log.v(TAG, "Calling eval with: " + str);
         if(str.indexOf('(')!=-1){
             return Double.NaN;
         }
-        if(str.indexOf('√')!=-1){
+        else if(str.indexOf('√')!=-1){
             return Double.NaN;
         }
-        if(str.indexOf('^')!=-1){
+        else if(str.indexOf('^')!=-1){
             return Double.NaN;
         }
-        if(str.indexOf('*')!=-1 || str.indexOf('/')!=-1){
-            return Double.NaN;
+
+        //Do the multiplication and division; only * / + - symbols remain at this point
+        //Examples to consider:
+        // 12*34
+        // 12 * 34
+        // 12 + 34 * 56
+        // 12 + - 34 * 56      shouldn't have to worry about the '-' in this one, will get taken care of in the '+' '-' evaluator below
+        // 12 + 34 * - 56      this time I'll have to take care of the '-'
+        else if(str.indexOf('*')!=-1 || str.indexOf('/')!=-1){
+
+            boolean doingMultiplication;
+            //find the first instance of * or / in the string
+            if(str.indexOf('*')==-1 || (str.indexOf('/')!=-1 && str.indexOf('/')<str.indexOf('*')) ) {
+                endIndex=str.indexOf('/');
+                doingMultiplication=false;
+            }
+            else{
+                endIndex=str.indexOf('*');
+                doingMultiplication=true;
+            }
+
+            //Now work backwards to find firstNumber
+            beginIndex=endIndex-1;
+
+            //  first jump over any whitespace
+            while(str.charAt(beginIndex)==' ') beginIndex--;
+
+            //  now find the beginning of the digits
+            //Log.v(TAG,String.valueOf(beginIndex>0)+String.valueOf(str.charAt(beginIndex)>='0')+String.valueOf(str.charAt(beginIndex)<='9'));
+            while( beginIndex>0 && ((str.charAt(beginIndex)>='0' && str.charAt(beginIndex)<='9') || str.charAt(beginIndex)=='.')) beginIndex--;
+
+            //  finally grab the value of firstNumber.  Will this ever be negative? Don't think so, if it is, the '+' '-' portion of eval below should take care of it
+            firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
+
+            //now keep track of where firstNumber began, and start looking for secondNumber
+            beginCalcIndex=beginIndex;
+            endIndex++; //jump past the '*' or the '-'
+            beginIndex=endIndex;
+
+            while(str.charAt(beginIndex)==' ' || str.charAt(beginIndex)=='+' || str.charAt(beginIndex)=='-'){
+                if(str.charAt(beginIndex)=='-') secondNumberIsNegative = !secondNumberIsNegative;
+                beginIndex++;
+            }
+
+            //Now to find the end of secondNumber
+            endIndex=beginIndex;
+            while(endIndex<str.length() && ((str.charAt(endIndex)>='0' && str.charAt(endIndex)<='9') || str.charAt(endIndex)=='.')) endIndex++;
+
+            //finally grab the value of secondNumber
+            if(endIndex>=str.length()){
+                secondNumber=Double.parseDouble(str.substring(beginIndex));
+            }
+            else{
+                secondNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
+            }
+            if(secondNumberIsNegative) secondNumber = -secondNumber;
+
+            if(doingMultiplication)
+                return eval(str.substring(0,beginCalcIndex)+String.valueOf(firstNumber*secondNumber)+str.substring(endIndex));
+            else
+                return eval(str.substring(0,beginCalcIndex)+String.valueOf(firstNumber/secondNumber)+str.substring(endIndex));
+
         }
+
         // there's only + and - left; compute the first operation and run eval again.
         // (this one gets ugly because the - symbol is overloaded to show subtraction and negatives)
-        if(str.indexOf('+')!=-1 || str.indexOf('-')!=-1){
-            double firstNumber;
-            boolean firstNumberIsNegative=false;
-            double secondNumber;
-            boolean secondNumberIsNegative=false;
-            int beginIndex = 0;
-            int endIndex = 0;
+        else if(str.indexOf('+')!=-1 || str.indexOf('-')!=-1){
+
 
             //first move past any whitespace at the beginning
             while(str.charAt(beginIndex)==' ') beginIndex++;
 
             //does the number lead with a - ?
             if(str.charAt(beginIndex)=='-'){
-                firstNumberIsNegative = true;
+                firstNumberIsNegative = !firstNumberIsNegative;
                 beginIndex++;
             }
 
@@ -455,12 +522,12 @@ public class MainActivity extends AppCompatActivity{
             while(endIndex<str.length() && ((str.charAt(endIndex)>='0'&&str.charAt(endIndex)<='9') || str.charAt(endIndex)=='.')) endIndex++;
 
             //now we can "gobble up" any trailing whitespace after the first number
-            while(str.charAt(endIndex)==' ') endIndex++;
+            while(endIndex<str.length() && (str.charAt(endIndex)==' ')) endIndex++;
 
             //finally we can get the value of firstNumber
 
             //if firstNumber goes to the end of the string, we are done, return that number.
-            if(endIndex>=str.length()){ //TODO: debug this line, is it really always false? this should get called when str = "-10" for example
+            if(endIndex>=str.length()){
                 firstNumber=Double.parseDouble(str.substring(beginIndex));
                 if (firstNumberIsNegative) firstNumber = -firstNumber;
                 return firstNumber;
@@ -478,7 +545,7 @@ public class MainActivity extends AppCompatActivity{
             // 12 - -23
             beginIndex=endIndex;
             while(str.charAt(beginIndex)==' ' || str.charAt(beginIndex)=='+' || str.charAt(beginIndex)=='-'){
-                if(str.charAt(beginIndex)=='-') secondNumberIsNegative = true;
+                if(str.charAt(beginIndex)=='-') secondNumberIsNegative = !secondNumberIsNegative;
                 beginIndex++;
             }
 
@@ -502,7 +569,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
         //no symbols, only digits left:
-        if(str.indexOf('0')!=-1 ||
+        else if(str.indexOf('0')!=-1 ||
                 str.indexOf('1')!=-1 ||
                 str.indexOf('2')!=-1 ||
                 str.indexOf('3')!=-1 ||
