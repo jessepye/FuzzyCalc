@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity{
         double errorRatio = Math.abs((guess-result)/result);
         double absoluteError = Math.abs(guess-result);
         Log.v(TAG,"errorRatio = "+errorRatio+"; absoluteError = "+absoluteError);
-        return (errorRatio<=0.10 || absoluteError<=1);
+        return (errorRatio<=0.1 || absoluteError<=1);
     }
 
     private void handleButtonInput(String s) {
@@ -434,7 +434,47 @@ public class MainActivity extends AppCompatActivity{
             return Double.NaN;
         }
         else if(str.indexOf('^')!=-1){
-            return Double.NaN;
+            endIndex=str.indexOf('^');
+
+            //Now work backwards to find firstNumber
+            beginIndex=endIndex-1;
+
+            //  first jump over any whitespace
+            while(str.charAt(beginIndex)==' ') beginIndex--;
+
+            //  now find the beginning of the digits
+            //Log.v(TAG,String.valueOf(beginIndex>0)+String.valueOf(str.charAt(beginIndex)>='0')+String.valueOf(str.charAt(beginIndex)<='9'));
+            while( beginIndex>0 && ((str.charAt(beginIndex)>='0' && str.charAt(beginIndex)<='9') || str.charAt(beginIndex)=='.')) beginIndex--;
+            beginIndex++; //return to the last value with a digit
+
+            //  finally grab the value of firstNumber.  Will this ever be negative? Don't think so, if it is, the '+' '-' portion of eval below should take care of it
+            firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
+
+            //now keep track of where firstNumber began, and start looking for secondNumber
+            beginCalcIndex=beginIndex;
+            endIndex++; //jump past the '^'
+            beginIndex=endIndex;
+
+            while(str.charAt(beginIndex)==' ' || str.charAt(beginIndex)=='+' || str.charAt(beginIndex)=='-'){
+                if(str.charAt(beginIndex)=='-') secondNumberIsNegative = !secondNumberIsNegative;
+                beginIndex++;
+            }
+
+            //Now to find the end of secondNumber
+            endIndex=beginIndex;
+            while(endIndex<str.length() && ((str.charAt(endIndex)>='0' && str.charAt(endIndex)<='9') || str.charAt(endIndex)=='.')) endIndex++;
+
+            //finally grab the value of secondNumber
+            if(endIndex>=str.length()){
+                secondNumber=Double.parseDouble(str.substring(beginIndex));
+            }
+            else{
+                secondNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
+            }
+            if(secondNumberIsNegative) secondNumber = -secondNumber;
+
+            return eval(str.substring(0,beginCalcIndex)+String.valueOf(Math.pow(firstNumber,secondNumber))+str.substring(endIndex));
+
         }
 
         //Do the multiplication and division; only * / + - symbols remain at this point
@@ -466,6 +506,7 @@ public class MainActivity extends AppCompatActivity{
             //  now find the beginning of the digits
             //Log.v(TAG,String.valueOf(beginIndex>0)+String.valueOf(str.charAt(beginIndex)>='0')+String.valueOf(str.charAt(beginIndex)<='9'));
             while( beginIndex>0 && ((str.charAt(beginIndex)>='0' && str.charAt(beginIndex)<='9') || str.charAt(beginIndex)=='.')) beginIndex--;
+            beginIndex++; //return to the last value with a digit
 
             //  finally grab the value of firstNumber.  Will this ever be negative? Don't think so, if it is, the '+' '-' portion of eval below should take care of it
             firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
