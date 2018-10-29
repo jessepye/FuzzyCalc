@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 vibe.vibrate(vibeTime);
+                int numCharsToDelete=0;
                 if (currentlyGuessing) {
                     Log.v(TAG, "Guess window is currently: " + guessWindow.getText().toString());
                     if (guessWindow.getText() != null && guessWindow.getText().length() > 0) {
@@ -150,7 +151,16 @@ public class MainActivity extends AppCompatActivity{
                 } else {
                     Log.v(TAG, "Calculation window is currently: " + calculationWindow.getText().toString());
                     if (calculationWindow.getText() != null && calculationWindow.getText().length() > 0) {
-                        calculationWindow.setText(calculationWindow.getText().toString().substring(0, calculationWindow.getText().length() - 1));
+                        //first move past trailing whitespace
+                        while(calculationWindow.getText().toString().length()-numCharsToDelete>0 && calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1-numCharsToDelete) == ' ') numCharsToDelete++;
+                        //now to delete the 1 character we're deleting
+                        if(calculationWindow.getText().toString().length()-numCharsToDelete>0) numCharsToDelete++;
+                        //now delete any more whitespace that we can find
+                        while(calculationWindow.getText().toString().length()-numCharsToDelete>0 && calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1-numCharsToDelete) == ' ') numCharsToDelete++;
+
+                        //now to do the actual deletion:
+                        calculationWindow.setText(calculationWindow.getText().toString().substring(0, calculationWindow.getText().length() - numCharsToDelete));
+
                     }
                 }
             }
@@ -427,8 +437,35 @@ public class MainActivity extends AppCompatActivity{
         int beginCalcIndex = 0;
 
         Log.v(TAG, "Calling eval with: " + str);
+
+        //Recursively call eval() on the contents of any parenthesis
         if(str.indexOf('(')!=-1){
-            return Double.NaN;
+            //beginIndex will point directly at the first '('
+            //endIndex will point at the matching ')'
+            beginIndex=str.indexOf('(');
+            endIndex=beginIndex;
+
+            int parenCounter=1;
+            do{
+                endIndex++;
+                if(str.charAt(endIndex)=='('){
+                    parenCounter++;
+                }
+                else if(str.charAt(endIndex)==')'){
+                    parenCounter--;
+                }
+            }while(endIndex<str.length() && parenCounter>0);
+
+            if(parenCounter==0){
+                if(endIndex>=str.length()-1){
+                    return eval(str.substring(0,beginIndex)+String.valueOf(eval(str.substring(beginIndex+1,endIndex))));
+                }
+                else {
+                    return eval(str.substring(0, beginIndex) + String.valueOf(eval(str.substring(beginIndex + 1, endIndex))) + str.substring(endIndex + 1));
+                }
+            }
+            else
+                return Double.NaN;
         }
         else if(str.indexOf('√')!=-1){
             return Double.NaN;
@@ -445,7 +482,7 @@ public class MainActivity extends AppCompatActivity{
             //  now find the beginning of the digits
             //Log.v(TAG,String.valueOf(beginIndex>0)+String.valueOf(str.charAt(beginIndex)>='0')+String.valueOf(str.charAt(beginIndex)<='9'));
             while( beginIndex>0 && ((str.charAt(beginIndex)>='0' && str.charAt(beginIndex)<='9') || str.charAt(beginIndex)=='.')) beginIndex--;
-            beginIndex++; //return to the last value with a digit
+            if(beginIndex!=0) beginIndex++; //return to the last value with a digit
 
             //  finally grab the value of firstNumber.  Will this ever be negative? Don't think so, if it is, the '+' '-' portion of eval below should take care of it
             firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
@@ -506,7 +543,7 @@ public class MainActivity extends AppCompatActivity{
             //  now find the beginning of the digits
             //Log.v(TAG,String.valueOf(beginIndex>0)+String.valueOf(str.charAt(beginIndex)>='0')+String.valueOf(str.charAt(beginIndex)<='9'));
             while( beginIndex>0 && ((str.charAt(beginIndex)>='0' && str.charAt(beginIndex)<='9') || str.charAt(beginIndex)=='.')) beginIndex--;
-            beginIndex++; //return to the last value with a digit
+            if(beginIndex!=0) beginIndex++; //return to the last value with a digit
 
             //  finally grab the value of firstNumber.  Will this ever be negative? Don't think so, if it is, the '+' '-' portion of eval below should take care of it
             firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
