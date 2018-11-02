@@ -1,12 +1,3 @@
-//TODO: don't allow rotation
-//TODO: hide title bar
-//TODO: fix fonts and sizes
-//TODO: fix superscript on x^2
-//TODO: finish (-)
-//TODO: figure out how to add a logo
-//TODO: don't use fixed text sizes
-
-
 package com.jessepye.fuzzycalc;
 
 import android.animation.ArgbEvaluator;
