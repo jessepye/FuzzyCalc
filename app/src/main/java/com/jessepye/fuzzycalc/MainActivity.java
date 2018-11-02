@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     private boolean currentlyGuessing = false;
+    private boolean justEnteredWrongGuess = false;
 
     Button btn_sqr, btn_backsp, btn_clr,
             btn_exp, btn_opn_paren, btn_cls_paren, btn_div,
@@ -145,6 +146,9 @@ public class MainActivity extends AppCompatActivity{
                 int numCharsToDelete=0;
                 if (currentlyGuessing) {
                     Log.v(TAG, "Guess window is currently: " + guessWindow.getText().toString());
+                    if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))){
+                        guessWindow.setText("");
+                    }
                     if (guessWindow.getText() != null && guessWindow.getText().length() > 0) {
                         guessWindow.setText(guessWindow.getText().toString().substring(0, guessWindow.getText().length() - 1));
                     }
@@ -350,7 +354,9 @@ public class MainActivity extends AppCompatActivity{
                         colorFade.start();
                     }
                     else{
-                        ObjectAnimator colorFade = ObjectAnimator.ofObject(guessWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.incorrectGuessColor), getResources().getColor(R.color.fieldSelected));
+                        justEnteredWrongGuess = true;
+                        resultWindow.setText("Try again!");
+                        ObjectAnimator colorFade = ObjectAnimator.ofObject(resultWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.incorrectGuessColor), getResources().getColor(R.color.fieldSelected));
                         colorFade.setDuration(750);
                         colorFade.start();
                     }
@@ -397,7 +403,14 @@ public class MainActivity extends AppCompatActivity{
                 guessWindow.setText(s);
             }
             else {
-                guessWindow.append(s);
+                if(justEnteredWrongGuess){
+                    guessWindow.setText(s);
+                    resultWindow.setText("");
+                    justEnteredWrongGuess=false;
+                }
+                else {
+                    guessWindow.append(s);
+                }
             }
         } else {
             //Did we just finish a calculation?
