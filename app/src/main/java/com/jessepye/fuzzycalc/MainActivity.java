@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity{
     private boolean currentlyGuessing = false;
     private boolean justEnteredWrongGuess = false;
 
-    Button btn_sqr, btn_backsp, btn_clr,
+    Button btn_sqr, btn_sqrt, btn_backsp, btn_clr,
             btn_exp, btn_opn_paren, btn_cls_paren, btn_div,
             btn_7, btn_8, btn_9, btn_mul,
             btn_4, btn_5, btn_6, btn_sub,
@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity{
         btn_backsp = findViewById(R.id.btn_backsp);
         btn_exp = findViewById(R.id.btn_exp);
         btn_sqr = findViewById(R.id.btn_sqr);
+        btn_sqrt = findViewById(R.id.btn_sqrt);
         btn_opn_paren = findViewById(R.id.btn_opn_paren);
         btn_cls_paren = findViewById(R.id.btn_cls_paren);
         btn_0 = findViewById(R.id.btn_0);
@@ -129,7 +130,6 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        //TODO: allow the user to delete many characters quickly by holding the backspace button
         btn_backsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +166,14 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 vibe.vibrate(vibeTime);
                 handleButtonInput("^(2)");
+            }
+        });
+
+        btn_sqrt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vibe.vibrate(vibeTime);
+                handleButtonInput("√(");
             }
         });
 
@@ -396,7 +404,7 @@ public class MainActivity extends AppCompatActivity{
             else {
                 if(justEnteredWrongGuess){
                     guessWindow.setText(s);
-                    resultWindow.setText("");
+                    //resultWindow.setText("");
                     justEnteredWrongGuess=false;
                 }
                 else {
@@ -426,7 +434,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private static double eval(String str){
-        //TODO: do input validation, e.g. make sure parenthesis are valid, nothing like ())(
 
         double firstNumber;
         boolean firstNumberIsNegative=false;
@@ -461,8 +468,13 @@ public class MainActivity extends AppCompatActivity{
             }while(endIndex<str.length() && parenCounter>0);
 
             if(parenCounter==0){
+
+                //TODO:
+                //we must check to see if there is a '^' following the closing parenthesis
+                //  otherwise (-5)^2 becomes -5^2, which is a different number!
+
                 if(endIndex>=str.length()-1){
-                    return eval(str.substring(0,beginIndex)+String.valueOf(eval(str.substring(beginIndex+1,endIndex))));
+                    return eval(str.substring(0, beginIndex) + String.valueOf(eval(str.substring(beginIndex + 1,endIndex))));
                 }
                 else {
                     return eval(str.substring(0, beginIndex) + String.valueOf(eval(str.substring(beginIndex + 1, endIndex))) + str.substring(endIndex + 1));
@@ -471,8 +483,34 @@ public class MainActivity extends AppCompatActivity{
             else
                 return Double.NaN;
         }
+
+        //In this implementation, '√' gets evaluated BEFORE '^'
+        //  this should be ok...
+        //  √  will always be paired with parenthesis to make things clear
+        //  if not (maybe if user pastes an expression from outside the app),
+        //  consider "2 ^ √ 3" and "√ 2 ^ 3"... I would evaluate the '√' first in both instances
         else if(str.indexOf('√')!=-1){
-            return Double.NaN;
+            beginIndex = str.indexOf('√');
+            beginIndex++; //jump past the '√'
+
+            endIndex = beginIndex;
+
+            //move past white space
+            while(endIndex<str.length() && str.charAt(endIndex)==' ') endIndex++;
+
+            //find the end of the number
+            while(endIndex<str.length() && ((str.charAt(endIndex)>='0' && str.charAt(endIndex)<='9') || str.charAt(endIndex)=='.')) endIndex++;
+
+            //finally grab the value of the number
+            if(endIndex>=str.length()){
+                firstNumber=Double.parseDouble(str.substring(beginIndex));
+            }
+            else{
+                firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
+            }
+            return eval(str.substring(0,beginIndex-1)
+                    + String.valueOf(Math.sqrt(firstNumber))
+                    + str.substring(endIndex));
         }
         else if(str.indexOf('^')!=-1){
             endIndex=str.indexOf('^');
@@ -485,8 +523,7 @@ public class MainActivity extends AppCompatActivity{
 
             //  now find the beginning of the digits
             //Log.v(TAG,String.valueOf(beginIndex>0)+String.valueOf(str.charAt(beginIndex)>='0')+String.valueOf(str.charAt(beginIndex)<='9'));
-            while( beginIndex>0 && ((str.charAt(beginIndex)>='0' && str.charAt(beginIndex)<='9') || str.charAt(beginIndex)=='.')) beginIndex--;
-            if(beginIndex!=0) beginIndex++; //return to the last value with a digit
+            while( beginIndex>0 && ((str.charAt(beginIndex-1)>='0' && str.charAt(beginIndex-1)<='9') || str.charAt(beginIndex-1)=='.')) beginIndex--;
 
             //  finally grab the value of firstNumber.  Will this ever be negative? Don't think so, if it is, the '+' '-' portion of eval below should take care of it
             firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
@@ -546,8 +583,7 @@ public class MainActivity extends AppCompatActivity{
 
             //  now find the beginning of the digits
             //Log.v(TAG,String.valueOf(beginIndex>0)+String.valueOf(str.charAt(beginIndex)>='0')+String.valueOf(str.charAt(beginIndex)<='9'));
-            while( beginIndex>0 && ((str.charAt(beginIndex)>='0' && str.charAt(beginIndex)<='9') || str.charAt(beginIndex)=='.')) beginIndex--;
-            if(beginIndex!=0) beginIndex++; //return to the last value with a digit
+            while( beginIndex>0 && ((str.charAt(beginIndex-1)>='0' && str.charAt(beginIndex-1)<='9') || str.charAt(beginIndex-1)=='.')) beginIndex--;
 
             //  finally grab the value of firstNumber.  Will this ever be negative? Don't think so, if it is, the '+' '-' portion of eval below should take care of it
             firstNumber=Double.parseDouble(str.substring(beginIndex,endIndex));
@@ -668,7 +704,6 @@ public class MainActivity extends AppCompatActivity{
         return Double.NaN;
     }
 
-    //TODO: grok this and implement a better version
     private static double evalOld(final String str) {
         if (str.isEmpty()) {
             return Double.NaN;
