@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 vibe.vibrate(vibeTime);
                 handleButtonInput("√(");
+                //handleButtonInput("sqrt(");
             }
         });
 
@@ -325,7 +326,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 vibe.vibrate(vibeTime);
-                handleButtonInput(" / ");
+                handleButtonInput(" ÷ ");
             }
         });
 
@@ -433,7 +434,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private static double eval(String str){
+    private static double evalNew(String str){
 
         double firstNumber;
         boolean firstNumberIsNegative=false;
@@ -469,9 +470,47 @@ public class MainActivity extends AppCompatActivity{
 
             if(parenCounter==0){
 
-                //TODO:
                 //we must check to see if there is a '^' following the closing parenthesis
                 //  otherwise (-5)^2 becomes -5^2, which is a different number!
+                /*
+                if (endIndex+1<str.length()) {
+                    int endIndex2=endIndex+1;
+
+                    while(endIndex2<str.length()-1 && (str.charAt(endIndex2+1)==' ')) endIndex2++; //skip over white space until we reach the next character
+                    if(str.charAt(endIndex2)=='^'){
+                        Log.v(TAG, "Found a '^' immediately following a ')'");
+                        boolean exponentIsNegative=false;
+                        endIndex2++;
+                        while(endIndex2<str.length()-1 && (str.charAt(endIndex2+1)==' ')) endIndex2++; //skip over white space until we reach the next character
+                        int beginIndex2=endIndex2;
+
+                        //gobble up all the negatives
+                        while(str.charAt(beginIndex2)=='-') {
+                            exponentIsNegative=!exponentIsNegative;
+                            beginIndex2++;
+                        }
+
+                        while(beginIndex2<str.length()-1 && (str.charAt(beginIndex2+1)==' ')) beginIndex2++; //skip over white space until we reach the next character
+
+                        //our exponent is a regular number; we need to find the beginning and ending of this number
+                        if(str.charAt(beginIndex2)>='0'&&str.charAt(beginIndex2)<='9'){
+                            endIndex2   //TODO: Finish me!
+                            while(endIndex<str.length() && ((str.charAt(endIndex)>='0' && str.charAt(endIndex)<='9') || str.charAt(endIndex)=='.')) endIndex++;
+                        }
+
+                        //our exponent is an expression inside of a set of parenthesis; we need to find the matching end parenthesis
+                        else if(str.charAt(beginIndex2)=='('){
+                            return Double.NaN;
+                        }
+
+                        else{
+                            //figure out how to throw an unexpected character exception
+                            return Double.NaN;
+                        }
+
+                    }
+                }
+                */
 
                 if(endIndex>=str.length()-1){
                     return eval(str.substring(0, beginIndex) + String.valueOf(eval(str.substring(beginIndex + 1,endIndex))));
@@ -704,7 +743,7 @@ public class MainActivity extends AppCompatActivity{
         return Double.NaN;
     }
 
-    private static double evalOld(final String str) {
+    private static double eval(final String str) {
         if (str.isEmpty()) {
             return Double.NaN;
         }
@@ -751,6 +790,7 @@ public class MainActivity extends AppCompatActivity{
                 for (; ; ) {
                     if (eat('*')) x *= parseFactor(); // multiplication
                     else if (eat('/')) x /= parseFactor(); // division
+                    else if (eat('÷')) x /= parseFactor(); // division
                     else return x;
                 }
             }
@@ -767,11 +807,11 @@ public class MainActivity extends AppCompatActivity{
                 } else if ((ch >= '0' && ch <= '9') || ch == '.') { // numbers
                     while ((ch >= '0' && ch <= '9') || ch == '.') nextChar();
                     x = Double.parseDouble(str.substring(startPos, this.pos));
-                } else if (ch >= 'a' && ch <= 'z') { // functions
-                    while (ch >= 'a' && ch <= 'z') nextChar();
+                } else if ((ch >= 'a' && ch <= 'z') || ch=='√') { // functions
+                    while ((ch >= 'a' && ch <= 'z') || ch=='√') nextChar();
                     String func = str.substring(startPos, this.pos);
                     x = parseFactor();
-                    if (func.equals("sqrt")) x = Math.sqrt(x);
+                    if (func.equals("sqrt") || func.equals("√")) x = Math.sqrt(x);
                     else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
                     else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
                     else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
