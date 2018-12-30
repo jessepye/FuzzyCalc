@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 vibe.vibrate(vibeTime);
 
+                justEnteredWrongGuess=false;
                 if(currentlyGuessing){
                     if(guessWindow.getText().toString().isEmpty()){
                         calculationWindow.setText("");
@@ -423,19 +424,10 @@ public class MainActivity extends AppCompatActivity{
         //input validation
         if (currentlyGuessing) {
             if(!(
-                 s.equals("-") ||
-                 s.equals(".") ||
-                 s.equals("0") ||
-                 s.equals("1") ||
-                 s.equals("2") ||
-                 s.equals("3") ||
-                 s.equals("4") ||
-                 s.equals("5") ||
-                 s.equals("6") ||
-                 s.equals("7") ||
-                 s.equals("8") ||
-                 s.equals("9")
-               )){
+                 s.equals("-") || s.equals(".") || s.equals("0") ||
+                 s.equals("1") || s.equals("2") || s.equals("3") ||
+                 s.equals("4") || s.equals("5") || s.equals("6") ||
+                 s.equals("7") || s.equals("8") || s.equals("9"))){
                 return;
             }
             else if((guessWindow.getText().toString().contains("."))
@@ -473,7 +465,7 @@ public class MainActivity extends AppCompatActivity{
                     guessWindow.append(s);
                 }
             }
-        } else {
+        } else { // (not currentlyGuessing)
             //Did we just finish a calculation?
             // If so, "1" "2" "3" clear the screen and start a new one;
             // "+" "-" etc. clear the screen, set calculationWindow to last answer, then append the "+" "-" etc.
@@ -499,7 +491,7 @@ public class MainActivity extends AppCompatActivity{
                         resultWindow.setText("");
                         guessWindow.setText("");
                     }
-                    //Default case if button is not listed above: do nothing
+                    //Default case if button is not listed above: do nothing (maybe it's an invalid
                 }
             }
             else {
