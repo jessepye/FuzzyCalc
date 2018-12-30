@@ -561,7 +561,7 @@ public class MainActivity extends AppCompatActivity{
                             return;
                         }
                     }
-                    else if (s.equals("√(") || s.equals("^") || s.equals(" / ") || s.equals(" ÷ ") || s.equals(" * ")) {
+                    else if (s.equals("√(") || s.equals("^") || s.equals(" / ") || s.equals(" ÷ ") || s.equals(" * ") || s.equals(".")) {
                         testString = calculationWindow.getText().toString()+s+"1";
                     }
                     else if(s.equals("(")) {
