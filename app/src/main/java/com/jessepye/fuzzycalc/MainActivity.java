@@ -3,6 +3,7 @@ package com.jessepye.fuzzycalc;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.ActionBar;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Vibrator;
@@ -150,8 +151,11 @@ public class MainActivity extends AppCompatActivity{
                         while(calculationWindow.getText().toString().length()-numCharsToDelete>0 && calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1-numCharsToDelete) == ' ') numCharsToDelete++;
                         //now to delete the 1 character we're deleting
                         if(calculationWindow.getText().toString().length()-numCharsToDelete>0) numCharsToDelete++;
-                        //now delete any more whitespace that we can find
-                        while(calculationWindow.getText().toString().length()-numCharsToDelete>0 && calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1-numCharsToDelete) == ' ') numCharsToDelete++;
+                        //now delete any more whitespace that we can find, but only if we just deleted + - / *
+                        char c = calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-numCharsToDelete);
+                        if (c=='+' || c=='-' || c=='*' || c=='/' || c=='÷') {
+                            while(calculationWindow.getText().toString().length()-numCharsToDelete>0 && calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1-numCharsToDelete) == ' ') numCharsToDelete++;
+                        }
 
                         //now to do the actual deletion:
                         calculationWindow.setText(calculationWindow.getText().toString().substring(0, calculationWindow.getText().length() - numCharsToDelete));
@@ -334,31 +338,50 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 vibe.vibrate(vibeTime);
+
+                //TODO: I wonder if this ObjectAnimator should be declared somewhere else?
+                ObjectAnimator colorFadeCorrect = ObjectAnimator.ofObject(resultWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.correctGuessColor), getResources().getColor(R.color.fieldNotSelected));
+                colorFadeCorrect.setDuration(750);
+
+                ObjectAnimator colorFadeWrong = ObjectAnimator.ofObject(resultWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.incorrectGuessColor), getResources().getColor(R.color.fieldNotSelected));
+                colorFadeWrong.setDuration(750);
+
                 if (!currentlyGuessing) {
+                    //sometimes the user mashes the "Enter" button a few times after guessing correctly
+                    //  in this case, just highlight the correct answer but don't change anything else
+                    if(!calculationWindow.getText().toString().isEmpty() && !guessWindow.getText().toString().isEmpty() && !resultWindow.getText().toString().isEmpty() && guessIsCloseEnough()){
+                        colorFadeCorrect.start();
+                        return;
+                    }
+
                     currentlyGuessing = true;
                     calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
                     guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
                     guessWindow.setTypeface(null, Typeface.ITALIC);
                     guessWindow.setText(getString(R.string.guess_hint));
                 } else {
-                    if (guessIsCloseEnough()) {
-                        DecimalFormat df = new DecimalFormat("#.##########");
-                        resultWindow.setText("" + df.format(eval(calculationWindow.getText().toString()))); //TODO: omg figure out why I need the "" +
-                        currentlyGuessing = false;
-                        calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected)); //TODO: probably should be using colors.xml or similar
-                        guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
+                    try {
+                        if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))) return;
+                        if (guessIsCloseEnough()) {
+                            DecimalFormat df = new DecimalFormat("#.##########");
+                            resultWindow.setText("" + df.format(eval(calculationWindow.getText().toString()))); //TODO: omg figure out why I need the "" +
+                            currentlyGuessing = false;
+                            calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected)); //TODO: probably should be using colors.xml or similar
+                            guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
 
-                        //TODO: I wonder if this ObjectAnimator should be declared somewhere else?
-                        ObjectAnimator colorFade = ObjectAnimator.ofObject(resultWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.correctGuessColor), getResources().getColor(R.color.fieldNotSelected));
-                        colorFade.setDuration(750);
-                        colorFade.start();
-                    }
-                    else{
-                        justEnteredWrongGuess = true;
+
+                            colorFadeCorrect.start();
+                        }
+                        else{
+                            justEnteredWrongGuess = true;
+                            resultWindow.setText("Try again!");
+                            colorFadeWrong.start();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        justEnteredWrongGuess=true;
                         resultWindow.setText("Try again!");
-                        ObjectAnimator colorFade = ObjectAnimator.ofObject(resultWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.incorrectGuessColor), getResources().getColor(R.color.fieldSelected));
-                        colorFade.setDuration(750);
-                        colorFade.start();
+                        colorFadeWrong.start();
                     }
                 }
             }
@@ -391,12 +414,50 @@ public class MainActivity extends AppCompatActivity{
         double errorRatio = Math.abs((guess-result)/result);
         double absoluteError = Math.abs(guess-result);
         Log.v(TAG,"errorRatio = "+errorRatio+"; absoluteError = "+absoluteError);
-        return (errorRatio<=0.1 || absoluteError<=1);
+        return (errorRatio<=0.15 || absoluteError<=0.2);
     }
 
     private void handleButtonInput(String s) {
         Log.v(TAG, "Calling handleButtonInput: " + s);
+
+        //input validation
         if (currentlyGuessing) {
+            if(!(
+                 s.equals("-") ||
+                 s.equals(".") ||
+                 s.equals("0") ||
+                 s.equals("1") ||
+                 s.equals("2") ||
+                 s.equals("3") ||
+                 s.equals("4") ||
+                 s.equals("5") ||
+                 s.equals("6") ||
+                 s.equals("7") ||
+                 s.equals("8") ||
+                 s.equals("9")
+               )){
+                return;
+            }
+            else if((guessWindow.getText().toString().contains("."))
+                     &&
+                     s.equals(".")
+                     &&
+                     !justEnteredWrongGuess
+               ){
+                return;
+            }
+            else if(!(guessWindow.getText().toString().equals(getString(R.string.guess_hint)) || guessWindow.getText().length()==0)
+                    &&
+                    s.equals("-")
+                    &&
+                    !justEnteredWrongGuess
+               ){
+                return;
+            }
+            //prevent the user from entering "00" or "05"; the only char that is valid after "0" is "."
+            else if(guessWindow.getText().toString().equals("0") && !s.equals(".") && !justEnteredWrongGuess){
+                return;
+            }
             Log.v(TAG,"Comparing "+guessWindow.getText().toString()+" against "+getString(R.string.guess_hint));
             if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))) {
                 guessWindow.setTypeface(null, Typeface.NORMAL);
@@ -415,17 +476,30 @@ public class MainActivity extends AppCompatActivity{
         } else {
             //Did we just finish a calculation?
             // If so, "1" "2" "3" clear the screen and start a new one;
-            // "+" "-" clear the screen, set calculationWindow to last answer, then append the "+" "-"
+            // "+" "-" etc. clear the screen, set calculationWindow to last answer, then append the "+" "-" etc.
             if(!calculationWindow.getText().toString().isEmpty() && !resultWindow.getText().toString().isEmpty() && !guessWindow.getText().toString().isEmpty()){
-                if(s.equals(" + ") || s.equals(" - ") || s.equals(" * ") || s.equals(" / ")){
-                    calculationWindow.setText(resultWindow.getText().toString()+s);
+                if(s.equals("-") || s.equals(".") || s.equals("0") ||
+                   s.equals("1") || s.equals("2") || s.equals("3") ||
+                   s.equals("4") || s.equals("5") || s.equals("6") ||
+                   s.equals("7") || s.equals("8") || s.equals("9")){
+                    calculationWindow.setText(s);
                     resultWindow.setText("");
                     guessWindow.setText("");
                 }
                 else{
-                    calculationWindow.setText(s);
-                    resultWindow.setText("");
-                    guessWindow.setText("");
+                    if (s.equals("^(2)") || s.equals("^") || s.equals("(") ||
+                        s.equals(" / ") || s.equals(" ÷ ") || s.equals(" * ") ||
+                        s.equals(" - ") || s.equals(" + ") ) {
+                        calculationWindow.setText(resultWindow.getText().toString()+s);
+                        resultWindow.setText("");
+                        guessWindow.setText("");
+                    }
+                    else if(s.equals("√(")){
+                        calculationWindow.setText(s+resultWindow.getText().toString());
+                        resultWindow.setText("");
+                        guessWindow.setText("");
+                    }
+                    //Default case if button is not listed above: do nothing
                 }
             }
             else {
