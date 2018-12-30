@@ -491,11 +491,79 @@ public class MainActivity extends AppCompatActivity{
                         resultWindow.setText("");
                         guessWindow.setText("");
                     }
-                    //Default case if button is not listed above: do nothing (maybe it's an invalid
+                    //Default case if button is not listed above: do nothing (maybe it's an invalid button)
                 }
             }
             else {
-                calculationWindow.append(s);
+                //TODO: fix this hack
+                // for now, I will pass the entire calculationWindow to the eval() method and see if it throws an exception
+                // if it doesn't throw an exception, it's valid input
+                // ...this doesn't work for '+' and '-' because the eval() method always things these are valid, e.g. "5 + - + - - + 6"
+                try{
+                    String testString = null;
+                    if (s.equals(" + ")) {
+                        if(calculationWindow.getText().toString().isEmpty()) {
+                            return;
+                        }
+
+                        char prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
+                        if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
+                        if(prevChar=='+' || prevChar=='-' || prevChar=='*' || prevChar=='/' || prevChar=='÷' || prevChar=='.' ||
+                           prevChar=='√' || prevChar=='^' || prevChar=='(')
+                            return;
+                        else{
+                            calculationWindow.append(s);
+                            return;
+                        }
+
+                    }
+                    else if(s.equals(" - ")){
+                        if(calculationWindow.getText().toString().isEmpty()) {
+                            calculationWindow.setText("-");
+                            return;
+                        }
+
+                        char prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
+                        if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
+                        if(prevChar=='+' || prevChar=='-' || prevChar=='*' || prevChar=='/' || prevChar=='÷' || prevChar=='.' ||
+                                prevChar=='√' || prevChar=='^' || prevChar=='(')
+                            return;
+                        else{
+                            calculationWindow.append(s);
+                            return;
+                        }
+                    }
+                    else if(s.equals("-")){
+                        if(calculationWindow.getText().toString().isEmpty()) {
+                            calculationWindow.setText("-");
+                            return;
+                        }
+
+                        char prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
+                        if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
+                        if(prevChar=='.')
+                            return;
+                        else{
+                            calculationWindow.append(s);
+                            return;
+                        }
+                    }
+                    else if (s.equals("√(") || s.equals("^") || s.equals(" / ") || s.equals(" ÷ ") || s.equals(" * ")) {
+                        testString = calculationWindow.getText().toString()+s+"1";
+                    }
+                    else if(s.equals("(")) {
+                        testString = calculationWindow.getText().toString()+s+"1)";
+                    }
+                    else{
+                        testString = calculationWindow.getText().toString()+s;
+                    }
+                    eval(testString);
+                    Log.v(TAG,String.valueOf(eval(testString)));
+                    calculationWindow.append(s);
+                }
+                catch(Exception e) {
+                    Log.v(TAG,"button press results in non-calculable string in calculationWindow");
+                }
             }
         }
     }
