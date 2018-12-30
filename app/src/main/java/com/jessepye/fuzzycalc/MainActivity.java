@@ -355,6 +355,19 @@ public class MainActivity extends AppCompatActivity{
                         return;
                     }
 
+                    //check for bad input before going over to the guessWindow
+                    //TODO: hack version, this checks for valid input by seeing if the eval() method throws an exception
+                    if(!calculationWindow.getText().toString().isEmpty() && guessWindow.getText().toString().isEmpty() && resultWindow.getText().toString().isEmpty()){
+                        try{
+                            eval(calculationWindow.getText().toString());
+                        }
+                        catch(Exception e){
+                            ObjectAnimator colorFadeBadCalculation = ObjectAnimator.ofObject(calculationWindow, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.incorrectGuessColor), getResources().getColor(R.color.fieldSelected));
+                            colorFadeBadCalculation.setDuration(750);
+                            colorFadeBadCalculation.start();
+                            return;
+                        }
+                    }
                     currentlyGuessing = true;
                     calculationWindow.setBackgroundColor(getResources().getColor(R.color.fieldNotSelected));
                     guessWindow.setBackgroundColor(getResources().getColor(R.color.fieldSelected));
