@@ -437,18 +437,18 @@ public class MainActivity extends AppCompatActivity{
         //input validation
         if (currentlyGuessing) {
             if(!(
-                 s.equals("-") || s.equals(".") || s.equals("0") ||
-                 s.equals("1") || s.equals("2") || s.equals("3") ||
-                 s.equals("4") || s.equals("5") || s.equals("6") ||
-                 s.equals("7") || s.equals("8") || s.equals("9"))){
+                    s.equals("-") || s.equals(".") || s.equals("0") ||
+                            s.equals("1") || s.equals("2") || s.equals("3") ||
+                            s.equals("4") || s.equals("5") || s.equals("6") ||
+                            s.equals("7") || s.equals("8") || s.equals("9"))){
                 return;
             }
             else if((guessWindow.getText().toString().contains("."))
-                     &&
-                     s.equals(".")
-                     &&
-                     !justEnteredWrongGuess
-               ){
+                    &&
+                    s.equals(".")
+                    &&
+                    !justEnteredWrongGuess
+            ){
                 return;
             }
             else if(!(guessWindow.getText().toString().equals(getString(R.string.guess_hint)) || guessWindow.getText().length()==0)
@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity{
                     s.equals("-")
                     &&
                     !justEnteredWrongGuess
-               ){
+            ){
                 return;
             }
             //prevent the user from entering "00" or "05"; the only char that is valid after "0" is "."
@@ -484,17 +484,17 @@ public class MainActivity extends AppCompatActivity{
             // "+" "-" etc. clear the screen, set calculationWindow to last answer, then append the "+" "-" etc.
             if(!calculationWindow.getText().toString().isEmpty() && !resultWindow.getText().toString().isEmpty() && !guessWindow.getText().toString().isEmpty()){
                 if(s.equals("-") || s.equals(".") || s.equals("0") ||
-                   s.equals("1") || s.equals("2") || s.equals("3") ||
-                   s.equals("4") || s.equals("5") || s.equals("6") ||
-                   s.equals("7") || s.equals("8") || s.equals("9")){
+                        s.equals("1") || s.equals("2") || s.equals("3") ||
+                        s.equals("4") || s.equals("5") || s.equals("6") ||
+                        s.equals("7") || s.equals("8") || s.equals("9")){
                     calculationWindow.setText(s);
                     resultWindow.setText("");
                     guessWindow.setText("");
                 }
                 else{
                     if (s.equals("^(2)") || s.equals("^") || s.equals("(") ||
-                        s.equals(" / ") || s.equals(" ÷ ") || s.equals(" * ") ||
-                        s.equals(" - ") || s.equals(" + ") ) {
+                            s.equals(" / ") || s.equals(" ÷ ") || s.equals(" * ") ||
+                            s.equals(" - ") || s.equals(" + ") ) {
                         calculationWindow.setText(resultWindow.getText().toString()+s);
                         resultWindow.setText("");
                         guessWindow.setText("");
@@ -522,7 +522,7 @@ public class MainActivity extends AppCompatActivity{
                         char prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
                         if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
                         if(prevChar=='+' || prevChar=='-' || prevChar=='*' || prevChar=='/' || prevChar=='÷' || prevChar=='.' ||
-                           prevChar=='√' || prevChar=='^' || prevChar=='(')
+                                prevChar=='√' || prevChar=='^' || prevChar=='(')
                             return;
                         else{
                             calculationWindow.append(s);
