@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity{
                 int numCharsToDelete=0;
                 if (currentlyGuessing) {
                     Log.v(TAG, "Guess window is currently: " + guessWindow.getText().toString());
+                    justEnteredWrongGuess=false; //fixes a bug: when a user wanted to correct their guess by deleting one number, typing the new number deleted the whole guess
                     if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))){
                         guessWindow.setText("");
                     }
