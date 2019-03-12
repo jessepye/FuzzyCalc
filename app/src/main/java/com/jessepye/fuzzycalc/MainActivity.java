@@ -451,7 +451,7 @@ public class MainActivity extends AppCompatActivity{
             ObjectAnimator[] buttonFadeOutArray = new ObjectAnimator[numButtons];
 
             int flashDuration=200;
-            int delayPerDistance=80;
+            int delayPerDistance=50;
 
             for (int k=1; k<numButtons; k++) {
                 switch (k) {
