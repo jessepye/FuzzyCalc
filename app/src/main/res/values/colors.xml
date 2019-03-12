@@ -13,4 +13,5 @@
     <color name="buttonLight">#888888</color>
     <color name="correctGuessColor">#1de9b6</color>
     <color name="incorrectGuessColor">#e53935</color>
+    <color name="keyboardFlashColor">#17B68E</color>
 </resources>

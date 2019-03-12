@@ -443,118 +443,125 @@ public class MainActivity extends AppCompatActivity{
         }
         double guess = Double.parseDouble(guessWindow.getText().toString());
         double result = eval(calculationWindow.getText().toString());
-        Log.v(TAG, "Comparing guess " + guess + " against real answer to test for exact correctness" + result);
+        Log.v(TAG, "Comparing guess " + guess + " against real answer " + result + "to test for exact correctness");
 
-        if(guess==result) {
+        double errorRatio = Math.abs((guess-result)/result);
+        double absoluteError = Math.abs(guess-result);
+
+        if(guess==result || errorRatio<0.0000000001 || absoluteError<0.000000001) { //guess==result is an insufficient test because of floating point
             int numButtons=24;
             ObjectAnimator[] buttonFadeInArray = new ObjectAnimator[numButtons];
             ObjectAnimator[] buttonFadeOutArray = new ObjectAnimator[numButtons];
 
-            int flashDuration=200;
-            int delayPerDistance=400;
+            int flashDuration=150;
+            int delayPerDistance=100;
 
-            for (int k=1; k<numButtons; k++) {
+            for (int k=0; k<numButtons; k++) {
                 switch (k) {
+                    case 0:
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_ent, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_ent, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.enterButton));
+                        break;
                     case 1:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 2:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_dot, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_dot, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_dot, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_dot, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 3:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_0, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_0, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_0, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_0, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 4:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_add, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_add, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonMedium));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_add, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_add, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonMedium));
                         break;
                     case 5:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_3, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_3, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_3, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_3, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 6:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_2, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_2, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_2, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_2, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 7:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_1, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_1, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_1, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_1, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 8:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_sub, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_sub, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonMedium));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_sub, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_sub, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonMedium));
                         break;
                     case 9:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_6, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_6, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_6, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_6, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 10:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_5, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_5, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_5, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_5, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 11:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_4, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_4, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_4, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_4, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 12:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_mul, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_mul, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonMedium));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_mul, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_mul, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonMedium));
                         break;
                     case 13:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_9, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_9, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_9, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_9, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 14:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_8, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_8, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_8, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_8, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 15:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_7, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_7, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonDark));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_7, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonDark), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_7, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonDark));
                         break;
                     case 16:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_div, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_div, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonMedium));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_div, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonMedium), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_div, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonMedium));
                         break;
                     case 17:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_cls_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_cls_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_cls_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_cls_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                     case 18:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_opn_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_opn_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_opn_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_opn_paren, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                     case 19:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_exp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_exp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_exp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_exp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                     case 20:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_clr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_clr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_clr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_clr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                     case 21:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_backsp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_backsp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_backsp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_backsp, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                     case 22:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_sqrt, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_sqrt, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_sqrt, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_sqrt, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                     case 23:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_sqr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_sqr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_sqr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_sqr, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                     case 24:
-                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.enterButton));
-                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.enterButton), getResources().getColor(R.color.buttonLight));
+                        buttonFadeInArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.buttonLight), getResources().getColor(R.color.keyboardFlashColor));
+                        buttonFadeOutArray[k] = ObjectAnimator.ofObject(btn_neg, "backgroundColor", new ArgbEvaluator(), getResources().getColor(R.color.keyboardFlashColor), getResources().getColor(R.color.buttonLight));
                         break;
                 }
 
                 double distance = Math.sqrt(Math.pow(((k%4)*1.5), 2) + Math.pow((Math.floor(k / 4)), 2));
-                double adjustedDistance = Math.pow((distance-0.75),0.25);
+                double adjustedDistance = Math.pow((distance),0.5);
                 buttonFadeInArray[k].setStartDelay((int) (adjustedDistance * delayPerDistance));
                 buttonFadeInArray[k].setDuration(flashDuration);
                 buttonFadeOutArray[k].setStartDelay((int) (adjustedDistance * delayPerDistance + flashDuration));
