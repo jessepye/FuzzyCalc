@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">FuzzyCalc</string>
-    <string name="guess_hint">(Enter a guess)</string>
+    <string name="guess_hint">(Enter an approximation)</string>
 </resources>
