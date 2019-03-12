@@ -445,13 +445,13 @@ public class MainActivity extends AppCompatActivity{
         double result = eval(calculationWindow.getText().toString());
         Log.v(TAG, "Comparing guess " + guess + " against real answer to test for exact correctness" + result);
 
-        if( guess==result) {
+        if(guess==result) {
             int numButtons=24;
             ObjectAnimator[] buttonFadeInArray = new ObjectAnimator[numButtons];
             ObjectAnimator[] buttonFadeOutArray = new ObjectAnimator[numButtons];
 
             int flashDuration=200;
-            int delayPerDistance=50;
+            int delayPerDistance=400;
 
             for (int k=1; k<numButtons; k++) {
                 switch (k) {
@@ -554,9 +554,10 @@ public class MainActivity extends AppCompatActivity{
                 }
 
                 double distance = Math.sqrt(Math.pow(((k%4)*1.5), 2) + Math.pow((Math.floor(k / 4)), 2));
-                buttonFadeInArray[k].setStartDelay((int) (distance * delayPerDistance));
+                double adjustedDistance = Math.pow((distance-0.75),0.25);
+                buttonFadeInArray[k].setStartDelay((int) (adjustedDistance * delayPerDistance));
                 buttonFadeInArray[k].setDuration(flashDuration);
-                buttonFadeOutArray[k].setStartDelay((int) (distance * delayPerDistance + flashDuration));
+                buttonFadeOutArray[k].setStartDelay((int) (adjustedDistance * delayPerDistance + flashDuration));
                 buttonFadeOutArray[k].setDuration(flashDuration);
 
                 buttonFadeInArray[k].start();
@@ -570,6 +571,9 @@ public class MainActivity extends AppCompatActivity{
 
         //input validation
         if (currentlyGuessing) {
+            //Limit guessWindow to only 25 characters
+            if(guessWindow.getText().length()>=25)
+                return;
             if(!(
                     s.equals("-") || s.equals(".") || s.equals("0") ||
                             s.equals("1") || s.equals("2") || s.equals("3") ||
@@ -613,6 +617,10 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         } else { // (not currentlyGuessing)
+            //Limit calculationWindow to 20 characters
+            if(calculationWindow.getText().length()>=20)
+                return;
+
             //Did we just finish a calculation?
             // If so, "1" "2" "3" clear the screen and start a new one;
             // "+" "-" etc. clear the screen, set calculationWindow to last answer, then append the "+" "-" etc.
