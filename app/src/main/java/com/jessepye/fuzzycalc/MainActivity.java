@@ -395,13 +395,13 @@ public class MainActivity extends AppCompatActivity{
                         }
                         else{
                             justEnteredWrongGuess = true;
-                            resultWindow.setText("Try again!");
+                            resultWindow.setText(R.string.try_again);
                             colorFadeWrong.start();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                         justEnteredWrongGuess=true;
-                        resultWindow.setText("Try again!");
+                        resultWindow.setText(R.string.try_again);
                         colorFadeWrong.start();
                     }
                 }
