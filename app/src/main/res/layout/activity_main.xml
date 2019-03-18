@@ -20,6 +20,7 @@
             android:background="@color/fieldSelected"
             android:gravity="start"
             android:padding="16dp"
+            android:maxLines="1"
             android:textSize="28dp" />
 
         <TextView
@@ -30,6 +31,7 @@
             android:background="@color/fieldNotSelected"
             android:gravity="end"
             android:padding="16dp"
+            android:maxLines="1"
             android:textSize="28dp" />
 
 
@@ -40,6 +42,7 @@
             android:layout_weight="1"
             android:background="@color/fieldNotSelected"
             android:padding="16dp"
+            android:maxLines="1"
             android:textSize="28dp" />
 
         <LinearLayout
@@ -55,7 +58,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/buttonLight"
-                android:text="x^2"
+                android:text="x²"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="18dp" />

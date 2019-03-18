@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity{
                 vibe.vibrate(vibeTime);
                 int numCharsToDelete=0;
                 if (currentlyGuessing) {
-                    Log.v(TAG, "Guess window is currently: " + guessWindow.getText().toString());
+                    //Log.v(TAG, "Guess window is currently: " + guessWindow.getText().toString());
                     justEnteredWrongGuess=false; //fixes a bug: when a user wanted to correct their guess by deleting one number, typing the new number deleted the whole guess
                     if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))){
                         guessWindow.setText("");
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity{
                         guessWindow.setText(guessWindow.getText().toString().substring(0, guessWindow.getText().length() - 1));
                     }
                 } else {
-                    Log.v(TAG, "Calculation window is currently: " + calculationWindow.getText().toString());
+                    //Log.v(TAG, "Calculation window is currently: " + calculationWindow.getText().toString());
                     if (calculationWindow.getText() != null && calculationWindow.getText().length() > 0) {
                         //first move past trailing whitespace
                         while(calculationWindow.getText().toString().length()-numCharsToDelete>0 && calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1-numCharsToDelete) == ' ') numCharsToDelete++;
@@ -414,7 +414,7 @@ public class MainActivity extends AppCompatActivity{
     // see: https://stackoverflow.com/questions/25905086/multiple-buttons-onclicklistener-android/25905182
     /*
     public boolean onTouch(View v, MotionEvent event){
-        Log.v("onTouch","Calling onTouch method");
+        //Log.v("onTouch","Calling onTouch method");
         if(event.getAction() == MotionEvent.ACTION_DOWN){
             final Vibrator vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
             final int vibeTime = 8;
@@ -430,11 +430,11 @@ public class MainActivity extends AppCompatActivity{
         }
         double guess = Double.parseDouble(guessWindow.getText().toString());
         double result = eval(calculationWindow.getText().toString());
-        Log.v(TAG, "Comparing guess " + guess + " against real answer " + result);
+        //Log.v(TAG, "Comparing guess " + guess + " against real answer " + result);
 
         double errorRatio = Math.abs((guess-result)/result);
         double absoluteError = Math.abs(guess-result);
-        Log.v(TAG,"errorRatio = "+errorRatio+"; absoluteError = "+absoluteError);
+        //Log.v(TAG,"errorRatio = "+errorRatio+"; absoluteError = "+absoluteError);
         return (errorRatio<=0.15 || absoluteError<=0.2);
     }
     private void flashIfGuessIsExactlyCorrect() {
@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity{
         }
         double guess = Double.parseDouble(guessWindow.getText().toString());
         double result = eval(calculationWindow.getText().toString());
-        Log.v(TAG, "Comparing guess " + guess + " against real answer " + result + "to test for exact correctness");
+        //Log.v(TAG, "Comparing guess " + guess + " against real answer " + result + "to test for exact correctness");
 
         double errorRatio = Math.abs((guess-result)/result);
         double absoluteError = Math.abs(guess-result);
@@ -574,7 +574,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void handleButtonInput(String s) {
-        Log.v(TAG, "Calling handleButtonInput: " + s);
+        //Log.v(TAG, "Calling handleButtonInput: " + s);
 
         //input validation
         if (currentlyGuessing) {
@@ -608,7 +608,7 @@ public class MainActivity extends AppCompatActivity{
             else if(guessWindow.getText().toString().equals("0") && !s.equals(".") && !justEnteredWrongGuess){
                 return;
             }
-            Log.v(TAG,"Comparing "+guessWindow.getText().toString()+" against "+getString(R.string.guess_hint));
+            //Log.v(TAG,"Comparing "+guessWindow.getText().toString()+" against "+getString(R.string.guess_hint));
             if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))) {
                 guessWindow.setTypeface(null, Typeface.NORMAL);
                 guessWindow.setText(s);
@@ -720,11 +720,11 @@ public class MainActivity extends AppCompatActivity{
                         testString = calculationWindow.getText().toString()+s;
                     }
                     eval(testString);
-                    Log.v(TAG,String.valueOf(eval(testString)));
+                    //Log.v(TAG,String.valueOf(eval(testString)));
                     calculationWindow.append(s);
                 }
                 catch(Exception e) {
-                    Log.v(TAG,"button press results in non-calculable string in calculationWindow");
+                    //Log.v(TAG,"button press results in non-calculable string in calculationWindow");
                 }
             }
         }
@@ -744,7 +744,7 @@ public class MainActivity extends AppCompatActivity{
         //used when keeping track of what to "cut out," before calling eval recursively
         int beginCalcIndex = 0;
 
-        Log.v(TAG, "Calling eval with: " + str);
+        //Log.v(TAG, "Calling eval with: " + str);
 
         //Recursively call eval() on the contents of any parenthesis
         if(str.indexOf('(')!=-1){
