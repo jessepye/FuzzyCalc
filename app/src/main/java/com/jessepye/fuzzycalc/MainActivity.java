@@ -147,6 +147,13 @@ public class MainActivity extends AppCompatActivity{
                         guessWindow.setText(guessWindow.getText().toString().substring(0, guessWindow.getText().length() - 1));
                     }
                 } else {
+                    //Test to see if the user just entered a guess correctly; if so, backspace should clear all 3 windows
+                    if(!calculationWindow.getText().toString().isEmpty() && !guessWindow.getText().toString().isEmpty() && !resultWindow.getText().toString().isEmpty() && guessIsCloseEnough()){
+                        calculationWindow.setText("");
+                        resultWindow.setText("");
+                        guessWindow.setText("");
+                        return;
+                    }
                     //Log.v(TAG, "Calculation window is currently: " + calculationWindow.getText().toString());
                     if (calculationWindow.getText() != null && calculationWindow.getText().length() > 0) {
                         //first move past trailing whitespace
