@@ -611,9 +611,29 @@ public class MainActivity extends AppCompatActivity{
             ){
                 return;
             }
-            //prevent the user from entering "00" or "05"; the only char that is valid after "0" is "."
-            else if(guessWindow.getText().toString().equals("0") && !s.equals(".") && !justEnteredWrongGuess){
-                return;
+            //prevent the user from entering redundant zeros
+            // e.g. 01, -00, 1+02, etc.
+            char prevChar=guessWindow.getText().length()>0 ? guessWindow.getText().toString().charAt(guessWindow.getText().toString().length()-1) : '\u0000';
+            if(prevChar==' ' && guessWindow.getText().toString().length()>1) prevChar=guessWindow.getText().toString().charAt(guessWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
+            if(prevChar=='0'){
+                //The last character is a '0'.
+                // We must figure out if this is a
+                //  a) placeholder zero (e.g. 500), in which case, it can stay
+                //  b) leading zero (e.g. 05) in which case, it should be
+                //    i) deleted if the user is entering a number, but
+                //    ii) kept if the user enters '.', ' + ', ' - ' etc
+                boolean isLeadingZero=true;
+                char c = prevChar;
+                for(int k=guessWindow.getText().length()-1; k>=0 && isLeadingZero && c=='0'; k--){
+                    c = guessWindow.getText().toString().charAt(k);
+                    if(c >='1' && c<='9') {
+                        isLeadingZero=false;
+                    }
+                }
+                if(isLeadingZero && (s.equals("0") || s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4") || s.equals("5") || s.equals("6") || s.equals("7") || s.equals("8") || s.equals("9"))){
+                    //delete the last character of guessWindow (it's a leading zero and the user is entering something to replace it)
+                    guessWindow.setText(guessWindow.getText().toString().substring(0,guessWindow.getText().toString().length()-1));
+                }
             }
             //Log.v(TAG,"Comparing "+guessWindow.getText().toString()+" against "+getString(R.string.guess_hint));
             if(guessWindow.getText().toString().equals(getString(R.string.guess_hint))) {
@@ -664,6 +684,31 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
             else {
+                //First, prevent the user from entering redundant zeros
+                // e.g. 01, -00, 1+02, etc.
+                char prevChar=calculationWindow.getText().length()>0 ? calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1) : '\u0000';
+                if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
+                if(prevChar=='0'){
+                    //The last character is a '0'.
+                    // We must figure out if this is a
+                    //  a) placeholder zero (e.g. 500), in which case, it can stay
+                    //  b) leading zero (e.g. 05) in which case, it should be
+                    //    i) deleted if the user is entering a number, but
+                    //    ii) kept if the user enters '.', ' + ', ' - ' etc
+                    boolean isLeadingZero=true;
+                    char c = prevChar;
+                    for(int k=calculationWindow.getText().length()-1; k>=0 && isLeadingZero && c=='0'; k--){
+                        c = calculationWindow.getText().toString().charAt(k);
+                        if(c >='1' && c<='9') {
+                            isLeadingZero=false;
+                        }
+                    }
+                    if(isLeadingZero && (s.equals("0") || s.equals("1") || s.equals("2") || s.equals("3") || s.equals("4") || s.equals("5") || s.equals("6") || s.equals("7") || s.equals("8") || s.equals("9"))){
+                        //delete the last character of calculationWindow (it's a leading zero and the user is entering something to replace it)
+                        calculationWindow.setText(calculationWindow.getText().toString().substring(0,calculationWindow.getText().toString().length()-1));
+                    }
+                }
+
                 //TODO: fix this hack
                 // for now, I will pass the entire calculationWindow to the eval() method and see if it throws an exception
                 // if it doesn't throw an exception, it's valid input
@@ -675,7 +720,7 @@ public class MainActivity extends AppCompatActivity{
                             return;
                         }
 
-                        char prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
+                        prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
                         if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
                         if(prevChar=='+' || prevChar=='-' || prevChar=='*' || prevChar=='/' || prevChar=='÷' || prevChar=='.' ||
                                 prevChar=='√' || prevChar=='^' || prevChar=='(')
@@ -692,7 +737,7 @@ public class MainActivity extends AppCompatActivity{
                             return;
                         }
 
-                        char prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
+                        prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
                         if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
                         if(prevChar=='+' || prevChar=='-' || prevChar=='*' || prevChar=='/' || prevChar=='÷' || prevChar=='.' ||
                                 prevChar=='√' || prevChar=='^' || prevChar=='(')
@@ -708,7 +753,7 @@ public class MainActivity extends AppCompatActivity{
                             return;
                         }
 
-                        char prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
+                        prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-1);
                         if(prevChar==' ' && calculationWindow.getText().toString().length()>1) prevChar=calculationWindow.getText().toString().charAt(calculationWindow.getText().toString().length()-2); //TODO: look more than 2 spaces back for the previous character
                         if(prevChar=='.')
                             return;
